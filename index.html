@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Matrícula - Cursos Online</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .header-container {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .header-container h1 {
+            font-weight: 700;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .step {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .step.completed {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+            color: white;
+        }
+        
+        .step-title {
+            position: absolute;
+            top: 55px;
+            width: 120px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: -35px;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .course-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-card.selected {
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+        }
+        
+        .course-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+        }
+        
+        .course-body {
+            padding: 1.5rem;
+        }
+        
+        .course-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 1rem 0;
+        }
+        
+        .polo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+        }
+        
+        .polo-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .polo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .polo-card.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-graduation-cap me-2"></i>IMEPE EAD
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sobre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contato</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="header-container">
+        <div class="container text-center">
+            <h1>Matrícula em Cursos Online</h1>
+            <p class="lead">Complete os passos abaixo para se inscrever em nossos cursos</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Step Indicator -->
+        <div class="step-indicator container" id="stepIndicator">
+            <div class="step active" id="step1">
+                1
+                <div class="step-title">Escolha o Polo</div>
+            </div>
+            <div class="step" id="step2">
+                2
+                <div class="step-title">Escolha o Curso</div>
+            </div>
+            <div class="step" id="step3">
+                3
+                <div class="step-title">Dados Pessoais</div>
+            </div>
+            <div class="step" id="step4">
+                4
+                <div class="step-title">Confirmação</div>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form id="enrollmentForm">
+                <!-- Step 1: Polo Selection -->
+                <div class="form-step active" id="formStep1">
+                    <h2>Escolha seu Polo</h2>
+                    <p class="mb-4">Selecione o polo educacional mais próximo de você:</p>
+                    
+                    <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+                        <!-- Polo 1: Tucuruí -->
+                        <div class="col">
+                            <div class="card h-100 polo-card" id="polo-tucurui" onclick="selectPolo('tucurui', 'Tucuruí')">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="polo-icon bg-primary text-white rounded-circle p-3 me-3">
+                                            <i class="fas fa-university fa-2x"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Polo Tucuruí</h5>
+                                    </div>
+                                    <p class="card-text">Polo de Educação Superior de Tucuruí</p>
+                                    <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Av. Principal, 1234 - Centro, Tucuruí - PA</small></p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-success">Matrículas Abertas</span>
+                                        <button type="button" class="btn btn-outline-primary" onclick="selectPolo('tucurui', 'Tucuruí')">Selecionar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Polo 2: Breu Branco -->
+                        <div class="col">
+                            <div class="card h-100 polo-card" id="polo-breu-branco" onclick="selectPolo('breu-branco', 'Breu Branco')">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="polo-icon bg-success text-white rounded-circle p-3 me-3">
+                                            <i class="fas fa-university fa-2x"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Polo Breu Branco</h5>
+                                    </div>
+                                    <p class="card-text">Polo de Educação Superior de Breu Branco</p>
+                                    <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Rua Principal, 567 - Centro, Breu Branco - PA</small></p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-success">Matrículas Abertas</span>
+                                        <button type="button" class="btn btn-outline-primary" onclick="selectPolo('breu-branco', 'Breu Branco')">Selecionar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Polo 3: Igarapé-Miri -->
+                        <div class="col">
+                            <div class="card h-100 polo-card" id="polo-igarape-miri" onclick="selectPolo('igarape-miri', 'Igarapé-Miri')">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="polo-icon bg-info text-white rounded-circle p-3 me-3">
+                                            <i class="fas fa-university fa-2x"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Polo Igarapé-Miri</h5>
+                                    </div>
+                                    <p class="card-text">Polo de Educação Superior de Igarapé-Miri</p>
+                                    <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Tv. Principal, 890 - Centro, Igarapé-Miri - PA</small></p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-success">Matrículas Abertas</span>
+                                        <button type="button" class="btn btn-outline-primary" onclick="selectPolo('igarape-miri', 'Igarapé-Miri')">Selecionar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Polo 4: Moju -->
+                        <div class="col">
+                            <div class="card h-100 polo-card" id="polo-moju" onclick="selectPolo('moju', 'Moju')">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="polo-icon bg-warning text-white rounded-circle p-3 me-3">
+                                            <i class="fas fa-university fa-2x"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0">Polo Moju</h5>
+                                    </div>
+                                    <p class="card-text">Polo de Educação Superior de Moju</p>
+                                    <p class="card-text"><small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Av. das Palmeiras, 123 - Centro, Moju - PA</small></p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-success">Matrículas Abertas</span>
+                                        <button type="button" class="btn btn-outline-primary" onclick="selectPolo('moju', 'Moju')">Selecionar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="selectedPoloId" name="poloId" value="">
+                    <input type="hidden" id="selectedPoloName" name="poloName" value="">
+                    <input type="hidden" id="moodleUrl" name="moodleUrl" value="">
+                    
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-primary" id="step1Next" disabled>Próximo <i class="fas fa-arrow-right ms-2"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Course Selection -->
+                <div class="form-step" id="formStep2">
+                    <h2>Escolha seu Curso</h2>
+                    <p class="mb-4">Selecione um dos cursos disponíveis no polo <strong id="selectedPoloDisplay"></strong>:</p>
+                    
+                    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4" id="coursesContainer">
+                        <!-- Os cursos serão carregados dinamicamente aqui -->
+                        <div class="col-12 text-center">
+                            <p>Carregando cursos disponíveis...</p>
+                            <div class="spinner-border text-primary" role="status"></div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="selectedCourseId" name="courseId" value="">
+                    <input type="hidden" id="selectedCourseName" name="courseName" value="">
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-outline-primary" id="step2Prev">
+                            <i class="fas fa-arrow-left me-2"></i> Voltar
+                        </button>
+                        <button type="button" class="btn btn-primary" id="step2Next" disabled>
+                            Próximo <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Personal Information -->
+                <div class="form-step" id="formStep3">
+                    <h2>Dados Pessoais</h2>
+                    <p class="mb-4">Preencha suas informações pessoais para completar a matrícula:</p>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">Nome*</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">Sobrenome*</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email*</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="form-text">Este será seu login para acesso ao curso.</div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Telefone/Celular*</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cpf" class="form-label">CPF*</label>
+                            <input type="text" class="form-control" id="cpf" name="cpf" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Endereço</label>
+                        <input type="text" class="form-control" id="address" name="address">
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="city" class="form-label">Cidade</label>
+                            <input type="text" class="form-control" id="city" name="city">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="state" class="form-label">Estado</label>
+                            <select class="form-select" id="state" name="state">
+                                <option value="" selected>Selecione...</option>
+                                <option value="AC">AC</option>
+                                <option value="AL">AL</option>
+                                <option value="AP">AP</option>
+                                <option value="AM">AM</option>
+                                <option value="BA">BA</option>
+                                <option value="CE">CE</option>
+                                <option value="DF">DF</option>
+                                <option value="ES">ES</option>
+                                <option value="GO">GO</option>
+                                <option value="MA">MA</option>
+                                <option value="MT">MT</option>
+                                <option value="MS">MS</option>
+                                <option value="MG">MG</option>
+                                <option value="PA" selected>PA</option>
+                                <option value="PB">PB</option>
+                                <option value="PR">PR</option>
+                                <option value="PE">PE</option>
+                                <option value="PI">PI</option>
+                                <option value="RJ">RJ</option>
+                                <option value="RN">RN</option>
+                                <option value="RS">RS</option>
+                                <option value="RO">RO</option>
+                                <option value="RR">RR</option>
+                                <option value="SC">SC</option>
+                                <option value="SP">SP</option>
+                                <option value="SE">SE</option>
+                                <option value="TO">TO</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="zipCode" class="form-label">CEP</label>
+                            <input type="text" class="form-control" id="zipCode" name="zipCode">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="educationLevel" class="form-label">Nível de Escolaridade</label>
+                        <select class="form-select" id="educationLevel" name="educationLevel">
+                            <option value="" selected>Selecione...</option>
+                            <option value="fundamental">Ensino Fundamental</option>
+                            <option value="medio">Ensino Médio</option>
+                            <option value="tecnico">Ensino Técnico</option>
+                            <option value="superior">Ensino Superior</option>
+                            <option value="pos">Pós-graduação</option>
+                            <option value="mestrado">Mestrado</option>
+                            <option value="doutorado">Doutorado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">Concordo com os <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">termos e condições</a></label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-outline-primary" id="step3Prev">
+                            <i class="fas fa-arrow-left me-2"></i> Voltar
+                        </button>
+                        <button type="button" class="btn btn-primary" id="step3Next">
+                            Próximo <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Confirmation -->
+                <div class="form-step" id="formStep4">
+                    <h2>Confirmação da Matrícula</h2>
+                    <p class="mb-4">Verifique os detalhes da sua matrícula antes de finalizar:</p>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="m-0">Resumo da Matrícula</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Polo:</div>
+                                <div class="col-md-8" id="summaryPoloName"></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Curso:</div>
+                                <div class="col-md-8" id="summaryCourseName"></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Nome Completo:</div>
+                                <div class="col-md-8" id="summaryName"></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Email:</div>
+                                <div class="col-md-8" id="summaryEmail"></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Telefone:</div>
+                                <div class="col-md-8" id="summaryPhone"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 fw-bold">CPF:</div>
+                                <div class="col-md-8" id="summaryCPF"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Ao finalizar, você será registrado automaticamente no curso selecionado. 
+                        As credenciais de acesso serão enviadas para o seu email.
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-outline-primary" id="step4Prev">
+                            <i class="fas fa-arrow-left me-2"></i> Voltar
+                        </button>
+                        <button type="submit" class="btn btn-success" id="submitBtn">
+                            <i class="fas fa-check-circle me-2"></i> Finalizar Matrícula
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>IMEPE EAD</h5>
+                    <p>Transformando vidas através da educação online de qualidade.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Links Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Cursos</a></li>
+                        <li><a href="#" class="text-white">Sobre Nós</a></li>
+                        <li><a href="#" class="text-white">Contato</a></li>
+                        <li><a href="#" class="text-white">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contato</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> contato@imepedu.com.br</li>
+                        <li><i class="fas fa-phone me-2"></i> (91) 3456-7890</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Belém, PA</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.1);">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 IMEPE EAD. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Terms Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Termos e Condições</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>1. Aceitação dos Termos</h6>
+                    <p>Ao se inscrever em nossos cursos, você concorda com estes termos e condições.</p>
+                    
+                    <h6>2. Acesso ao Curso</h6>
+                    <p>Após a confirmação da matrícula, você receberá acesso ao conteúdo do curso pelo período estabelecido.</p>
+                    
+                    <h6>3. Propriedade Intelectual</h6>
+                    <p>Todo o conteúdo dos cursos é protegido por direitos autorais e não pode ser compartilhado ou reproduzido sem autorização.</p>
+                    
+                    <h6>4. Política de Reembolso</h6>
+                    <p>Você pode solicitar reembolso em até 7 dias após a matrícula, desde que tenha acessado menos de 30% do conteúdo do curso.</p>
+                    
+                    <h6>5. Responsabilidades do Aluno</h6>
+                    <p>O aluno é responsável por manter suas credenciais de acesso seguras e por seguir o código de conduta da plataforma.</p>
+                    
+                    <h6>6. Polos Educacionais</h6>
+                    <p>Cada polo possui sua própria instância Moodle e regras específicas. O aluno deverá seguir as orientações específicas do polo em que se matriculou.</p>
+                    
+                    <h6>7. Proteção de Dados</h6>
+                    <p>Seus dados pessoais serão tratados conforme nossa política de privacidade e a Lei Geral de Proteção de Dados (LGPD).</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Matrícula Realizada com Sucesso!</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle text-success" style="font-size: 64px; margin: 20px 0;"></i>
+                    <h4>Parabéns!</h4>
+                    <p>Sua matrícula foi realizada com sucesso no polo <strong id="modalPoloName"></strong>.</p>
+                    <p>Enviamos um email com suas credenciais de acesso para o curso.</p>
+                    <div class="alert alert-info mt-3">
+                        <p class="mb-0">URL do Moodle: <span id="modalMoodleUrl"></span></p>
+                        <p class="mb-0">Nome de usuário: <span id="modalUsername"></span></p>
+                        <p class="mb-0">Senha inicial: <span id="modalPassword"></span></p>
+                    </div>
+                    <p class="mt-3">Recomendamos alterar sua senha no primeiro acesso.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" id="goToMoodleLink" class="btn btn-primary" target="_blank">Ir para a Plataforma de Cursos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+        // Variáveis globais
+        let currentStep = 1;
+        let selectedPoloId = null;
+        let selectedPoloName = null;
+        let selectedMoodleUrl = null; // Nova variável para armazenar a URL do Moodle
+        let selectedCourseId = null;
+        let selectedCourseName = null;
+
+        // Função para selecionar polo
+        function selectPolo(poloId, poloName) {
+            // Remover seleção de todos os polos
+            document.querySelectorAll('.polo-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Adicionar seleção ao polo clicado
+            document.getElementById('polo-' + poloId).classList.add('selected');
+            
+            // Armazenar informações do polo
+            selectedPoloId = poloId;
+            selectedPoloName = poloName;
+            
+            // Atualizar campos ocultos
+            document.getElementById('selectedPoloId').value = poloId;
+            document.getElementById('selectedPoloName').value = poloName;
+            
+            // Habilitar botão de próximo
+            document.getElementById('step1Next').disabled = false;
+        }
+
+        // Função para selecionar curso
+        function selectCourse(courseId, courseName) {
+            // Remover seleção de todos os cursos
+            document.querySelectorAll('.course-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Adicionar seleção ao curso clicado
+            document.getElementById('course' + courseId).classList.add('selected');
+            
+            // Armazenar informações do curso
+            selectedCourseId = courseId;
+            selectedCourseName = courseName;
+            
+            // Atualizar campos ocultos
+            document.getElementById('selectedCourseId').value = courseId;
+            document.getElementById('selectedCourseName').value = courseName;
+            
+            // Habilitar botão de próximo
+            document.getElementById('step2Next').disabled = false;
+        }
+
+        // Função para carregar cursos do polo selecionado
+        function loadCoursesForPolo(poloId) {
+            const coursesContainer = document.getElementById('coursesContainer');
+            
+            // Mostrar indicador de carregamento
+            coursesContainer.innerHTML = '<div class="col-12 text-center"><p>Carregando cursos disponíveis...</p><div class="spinner-border text-primary" role="status"></div></div>';
+            
+            // Buscar cursos do polo
+            fetch('get_courses_by_polo.php?polo=' + poloId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Armazenar URL do Moodle para este polo
+                        selectedMoodleUrl = data.moodle_url;
+                        document.getElementById('moodleUrl').value = data.moodle_url;
+                        
+                        if (data.courses.length === 0) {
+                            coursesContainer.innerHTML = '<div class="col-12"><div class="alert alert-warning">Nenhum curso disponível neste polo. Por favor, selecione outro polo ou entre em contato com o administrador.</div></div>';
+                            return;
+                        }
+                        
+                        // Limpar container
+                        coursesContainer.innerHTML = '';
+                        
+                        // Adicionar cada curso
+                        data.courses.forEach(course => {
+                            const courseHtml = `
+                            <div class="col">
+                                <div class="course-card" id="course${course.id}" onclick="selectCourse(${course.id}, '${course.name.replace(/'/g, "\\'")}')">
+                                    <div class="course-header">
+                                        <h5 class="m-0">${course.name}</h5>
+                                    </div>
+                                    <div class="course-body">
+                                        <p>${course.summary || 'Aprenda em um ambiente flexível e adaptado às suas necessidades.'}</p>
+                                        <div class="course-price">R$ 297,00</div>
+                                        <ul class="mb-3">
+                                            <li>40 horas de conteúdo</li>
+                                            <li>Certificado incluído</li>
+                                            <li>Acesso por 1 ano</li>
+                                        </ul>
+                                        <button type="button" class="btn btn-outline-primary w-100" onclick="selectCourse(${course.id}, '${course.name.replace(/'/g, "\\'")}')">Selecionar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                            
+                            coursesContainer.innerHTML += courseHtml;
+                        });
+                        
+                        // Resetar seleção de curso
+                        selectedCourseId = null;
+                        selectedCourseName = null;
+                        document.getElementById('selectedCourseId').value = '';
+                        document.getElementById('selectedCourseName').value = '';
+                        document.getElementById('step2Next').disabled = true;
+                        
+                    } else {
+                        coursesContainer.innerHTML = `<div class="col-12"><div class="alert alert-danger">Erro ao carregar cursos: ${data.message}</div></div>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    coursesContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Erro ao comunicar com o servidor. Por favor, tente novamente mais tarde.</div></div>';
+                });
+        }
+
+        // Função para navegar para próxima etapa
+        function goToNextStep() {
+            // Esconder etapa atual
+            document.getElementById('formStep' + currentStep).classList.remove('active');
+            
+            // Atualizar etapa atual
+            currentStep++;
+            
+            // Mostrar próxima etapa
+            document.getElementById('formStep' + currentStep).classList.add('active');
+            
+            // Ações específicas para cada etapa
+            if (currentStep === 2) {
+                // Se avançou para etapa de seleção de curso, carregar cursos do polo
+                document.getElementById('selectedPoloDisplay').textContent = selectedPoloName;
+                loadCoursesForPolo(selectedPoloId);
+            } else if (currentStep === 4) {
+                // Se avançou para etapa de confirmação, preencher resumo
+                populateSummary();
+            }
+            
+            // Atualizar indicador de etapas
+            updateStepIndicator();
+            
+            // Rolar para o topo
+            window.scrollTo({
+                top: document.getElementById('stepIndicator').offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+
+        // Função para navegar para etapa anterior
+        function goToPrevStep() {
+            // Esconder etapa atual
+            document.getElementById('formStep' + currentStep).classList.remove('active');
+            
+            // Atualizar etapa atual
+            currentStep--;
+            
+            // Mostrar etapa anterior
+            document.getElementById('formStep' + currentStep).classList.add('active');
+            
+            // Atualizar indicador de etapas
+            updateStepIndicator();
+            
+            // Rolar para o topo
+            window.scrollTo({
+                top: document.getElementById('stepIndicator').offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+
+        // Função para atualizar indicador de etapas
+        function updateStepIndicator() {
+            // Resetar todas as etapas
+            document.querySelectorAll('.step').forEach((step, index) => {
+                const stepNum = index + 1;
+                step.classList.remove('active', 'completed');
+                
+                if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                } else if (stepNum === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // Função para preencher resumo
+        function populateSummary() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            
+            document.getElementById('summaryPoloName').textContent = selectedPoloName;
+            document.getElementById('summaryCourseName').textContent = selectedCourseName;
+            document.getElementById('summaryName').textContent = firstName + ' ' + lastName;
+            document.getElementById('summaryEmail').textContent = document.getElementById('email').value;
+            document.getElementById('summaryPhone').textContent = document.getElementById('phone').value;
+            document.getElementById('summaryCPF').textContent = document.getElementById('cpf').value;
+        }
+
+        // Função para validar campos da etapa 3 (dados pessoais)
+        function validateStep3() {
+            const requiredFields = [
+                'firstName',
+                'lastName',
+                'email',
+                'phone',
+                'cpf'
+            ];
+            
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const inputElement = document.getElementById(field);
+                if (!inputElement.value.trim()) {
+                    inputElement.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    inputElement.classList.remove('is-invalid');
+                }
+            });
+            
+            // Verificar checkbox de termos
+            const termsCheck = document.getElementById('termsCheck');
+            if (!termsCheck.checked) {
+                termsCheck.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                termsCheck.classList.remove('is-invalid');
+            }
+            
+            // Validar formato de email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const emailElement = document.getElementById('email');
+            if (emailElement.value && !emailRegex.test(emailElement.value)) {
+                emailElement.classList.add('is-invalid');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aplicar máscaras nos campos
+            if (typeof $ !== 'undefined' && $.fn.mask) {
+                $('#cpf').mask('000.000.000-00');
+                $('#phone').mask('(00) 00000-0000');
+                $('#zipCode').mask('00000-000');
+            }
+            
+            // Botões de navegação
+            document.getElementById('step1Next').addEventListener('click', goToNextStep);
+            
+            document.getElementById('step2Prev').addEventListener('click', goToPrevStep);
+            document.getElementById('step2Next').addEventListener('click', goToNextStep);
+            
+            document.getElementById('step3Prev').addEventListener('click', goToPrevStep);
+            document.getElementById('step3Next').addEventListener('click', function() {
+                if (validateStep3()) {
+                    goToNextStep();
+                } else {
+                    // Mostrar mensagem de validação
+                    alert('Por favor, preencha todos os campos obrigatórios corretamente.');
+                }
+            });
+            
+            document.getElementById('step4Prev').addEventListener('click', goToPrevStep);
+            
+            // Form submission
+            document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Mostrar overlay de carregamento
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                
+                // Coletar dados do formulário
+                const formData = new FormData(this);
+                
+                // Enviar dados para o servidor
+                fetch('process_enrollment.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Esconder overlay de carregamento
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    
+                    if (data.success) {
+                        // Mostrar modal de sucesso com credenciais
+                        document.getElementById('modalUsername').textContent = data.username;
+                        document.getElementById('modalPassword').textContent = data.password;
+                        document.getElementById('modalPoloName').textContent = selectedPoloName;
+                        document.getElementById('modalMoodleUrl').textContent = data.moodle_url;
+                        
+                        // Atualizar link para o Moodle
+                        document.getElementById('goToMoodleLink').href = data.moodle_url;
+                        
+                        new bootstrap.Modal(document.getElementById('successModal')).show();
+                    } else {
+                        // Mostrar mensagem de erro
+                        alert('Erro ao processar matrícula: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    // Esconder overlay de carregamento
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    
+                    // Mostrar mensagem de erro
+                    console.error('Erro:', error);
+                    alert('Ocorreu um erro ao processar sua matrícula. Por favor, tente novamente.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -2,3 +2,15 @@
 [2025-05-13 15:16:10] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Técnico em Enfermagem 
 [2025-05-13 15:21:20] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Igarapé-Miri
 [2025-05-13 15:21:23] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Técnico em Enfermagem 
+[2025-05-13 16:41:38] [SUCCESS] [native] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Igarapé-Miri
+[2025-05-13 16:53:56] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Técnico em Informática - Polo Tucuruí
+[2025-05-13 17:03:01] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Técnico em Informática - Polo Tucuruí
+[2025-05-13 17:04:35] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Igarapé-Miri
+[2025-05-13 17:04:38] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Técnico em Enfermagem 
+[2025-05-13 17:16:10] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Técnico em Informática - Polo Tucuruí
+[2025-05-13 17:27:29] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Igarapé-Miri
+[2025-05-13 17:27:32] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Técnico em Enfermagem 
+[2025-05-13 17:37:10] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Igarapé-Miri
+[2025-05-13 17:37:13] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Técnico em Enfermagem 
+[2025-05-13 17:39:18] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Igarapé-Miri
+[2025-05-13 17:39:18] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Igarapé-Miri

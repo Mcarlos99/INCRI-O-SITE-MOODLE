@@ -128,7 +128,7 @@ function sendAdminNotificationEmail($firstName, $lastName, $email, $phone, $cate
                 
                 <p>Por favor, entre em contato com o aluno para discutir os detalhes de pagamento e finalizar o processo de matrícula.</p>
                 
-                <a href='admin/prematriculas.php?key=admin123' class='action-button'>Gerenciar Pré-matrículas</a>
+                <a href='https://inscricao.imepedu.com.br/admin/prematriculas.php?key=admin123' class='action-button'>Gerenciar Pré-matrículas</a>
             </div>
         </div>
     </body>

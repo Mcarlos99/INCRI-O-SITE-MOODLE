@@ -1,0 +1,4 @@
+2025-05-13 14:27:54 | Para: maurocarlos.ti@gmail.com | Método: smtp | Resultado: SUCESSO
+2025-05-13 14:27:55 | Para: maurocarlos.ti@gmail.com | Método: smtp | Resultado: SUCESSO
+2025-05-13 15:14:10 | Para: maurocarlos.ti@gmail.com | Método: smtp | Resultado: SUCESSO
+2025-05-13 15:14:31 | Para: magalhaeseducacao.aedu@gmail.com | Método: smtp | Resultado: SUCESSO

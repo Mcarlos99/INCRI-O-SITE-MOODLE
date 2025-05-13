@@ -1,12 +1,12 @@
 <?php
 /**
- * Helper para envio de emails - Versão completa com SMTP
- * Esta versão combina funcionalidade SMTP e mail() em um único arquivo
+ * Helper para envio de emails com garantia de uso SMTP
+ * Esta versão modificada prioriza o uso de SMTP para todos os envios
  */
 
 if (!function_exists('sendEmail')) {
     /**
-     * Envia email usando SMTP (se configurado) ou mail() como fallback
+     * Envia email usando SMTP (prioridade) ou mail() como fallback
      * 
      * @param string $to Email do destinatário
      * @param string $subject Assunto do email
@@ -16,40 +16,55 @@ if (!function_exists('sendEmail')) {
      * @return bool Retorna true se o email foi enviado com sucesso
      */
     function sendEmail($to, $subject, $htmlMessage, $fromEmail = 'noreply@imepedu.com.br', $fromName = 'IMEPE EAD') {
-        // Verificar se as configurações SMTP estão disponíveis
-        $smtpConfigFile = __DIR__ . '/smtp_config.php';
-        if (file_exists($smtpConfigFile)) {
-            // Incluir arquivo de configuração SMTP
-            include_once($smtpConfigFile);
+        // MODIFICAÇÃO IMPORTANTE: Sempre verificar se o arquivo SMTP está disponível e priorizar SMTP
+        $useSMTP = file_exists(__DIR__ . '/smtp_config.php');
+        
+        // Registrar a tentativa em log para diagnóstico
+        $emailTryLog = "[" . date('Y-m-d H:i:s') . "] Tentando enviar email para $to | SMTP Disponível: " . ($useSMTP ? "SIM" : "NÃO") . "\n";
+        file_put_contents(__DIR__ . '/email_attempt.log', $emailTryLog, FILE_APPEND);
+        
+        if ($useSMTP) {
+            // Carregar configurações SMTP
+            include_once(__DIR__ . '/smtp_config.php');
             
-            // Verificar se a variável $EMAIL_CONFIG está definida e configurada
-            if (isset($EMAIL_CONFIG) && 
-                !empty($EMAIL_CONFIG['smtp_host']) && 
-                !empty($EMAIL_CONFIG['smtp_username']) && 
-                !empty($EMAIL_CONFIG['smtp_password'])) {
-                
-                // Tentar enviar via SMTP
-                $result = sendEmailWithSMTP(
-                    $to, 
-                    $subject, 
-                    $htmlMessage, 
-                    $fromEmail, 
-                    $fromName, 
-                    $EMAIL_CONFIG
-                );
-                
-                // Se o envio SMTP for bem-sucedido, retornar resultado
-                if ($result) {
-                    return true;
+            // Verificar se a configuração é válida
+            if (isset($EMAIL_CONFIG) && !empty($EMAIL_CONFIG['smtp_host']) && !empty($EMAIL_CONFIG['smtp_username'])) {
+                // Tentar usar sendEmailWithSMTP diretamente
+                if (function_exists('sendEmailWithSMTP')) {
+                    try {
+                        $result = sendEmailWithSMTP(
+                            $to, 
+                            $subject, 
+                            $htmlMessage, 
+                            $EMAIL_CONFIG['from_email'] ?? $fromEmail, 
+                            $EMAIL_CONFIG['from_name'] ?? $fromName, 
+                            $EMAIL_CONFIG
+                        );
+                        
+                        // Registrar o resultado
+                        logEmailSend($to, $subject, $result, 'smtp');
+                        
+                        // Se bem-sucedido, retornar
+                        if ($result) {
+                            return true;
+                        }
+                    } catch (Exception $e) {
+                        // Registrar o erro
+                        logEmailError($to, $subject, 'Erro SMTP direto: ' . $e->getMessage());
+                    }
                 }
-                
-                // Se falhar, registrar o erro e tentar com mail() como fallback
-                logEmailError($to, $subject, 'Falha no envio SMTP, tentando mail() como fallback');
             }
         }
         
-        // Fallback para a função mail() nativa
-        return sendEmailWithMail($to, $subject, $htmlMessage, $fromEmail, $fromName);
+        // Se SMTP falhou ou não estiver disponível, tentar mail() como fallback
+        try {
+            $result = sendEmailWithMail($to, $subject, $htmlMessage, $fromEmail, $fromName);
+            logEmailSend($to, $subject, $result, 'mail');
+            return $result;
+        } catch (Exception $e) {
+            logEmailError($to, $subject, 'Erro mail(): ' . $e->getMessage());
+            return false;
+        }
     }
     
     /**

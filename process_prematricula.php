@@ -1,12 +1,7 @@
 <?php
 /**
- * Patch direto para process_prematricula.php
- * 
- * Este script garante o envio de notificações para o administrador.
- * INSTRUÇÕES: 
- * 1. Renomeie o arquivo process_prematricula.php atual para process_prematricula.php.bak
- * 2. Faça upload deste arquivo como process_prematricula.php
- * 3. Teste realizando uma pré-matrícula
+ * Versão final do process_prematricula.php que garante que tanto alunos quanto
+ * administradores recebam e-mails pelo mesmo método SMTP
  */
 
 // Permitir acesso de qualquer origem (CORS)
@@ -191,56 +186,93 @@ try {
     $dbLog .= "==============================\n";
     file_put_contents('prematricula_db.log', $dbLog, FILE_APPEND);
     
+    // Preparar para enviar e-mails - verificar e carregar configuração SMTP
+    require_once('simple_mail_helper.php');
+    
+    // Verificar se o arquivo smtp_config.php existe e carregá-lo
+    $useSMTP = file_exists('smtp_config.php');
+    $smtpConfig = null;
+    
+    if ($useSMTP) {
+        // Carregar configurações SMTP
+        include_once('smtp_config.php');
+        if (isset($EMAIL_CONFIG) && !empty($EMAIL_CONFIG['smtp_host'])) {
+            $smtpConfig = $EMAIL_CONFIG;
+            
+            // Registrar em log
+            $smtpLog = "==== SMTP CONFIG (" . date('Y-m-d H:i:s') . ") ====\n";
+            $smtpLog .= "Host: " . $smtpConfig['smtp_host'] . "\n";
+            $smtpLog .= "Usuário: " . $smtpConfig['smtp_username'] . "\n";
+            $smtpLog .= "==============================\n";
+            file_put_contents('smtp_config.log', $smtpLog, FILE_APPEND);
+        } else {
+            $useSMTP = false;
+        }
+    }
+    
     // Enviar email para o aluno
     $emailSent = false;
     try {
-        // Verificar se existe o arquivo de funções de email
-        if (file_exists('simple_email_functions.php')) {
-            require_once('simple_email_functions.php');
-            
-            if (function_exists('sendPreMatriculaEmail')) {
-                $emailSent = sendPreMatriculaEmail($email, $firstName, $categoryName, $poloName, $emailType);
-            } else if (function_exists('sendEmail')) {
-                // Fallback: enviar email diretamente
-                require_once('simple_mail_helper.php');
-                
-                $subject = 'Confirmação de Pré-matrícula - ' . $categoryName . ' - Polo ' . $poloName;
-                
-                $htmlMessage = "
-                <html>
-                <head>
-                    <title>Confirmação de Pré-matrícula</title>
-                </head>
-                <body>
-                    <div style='max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;'>
-                        <div style='background-color: #3498db; color: white; padding: 15px; text-align: center;'>
-                            <h2>Pré-matrícula Recebida!</h2>
-                        </div>
-                        <div style='padding: 20px;'>
-                            <p>Olá <strong>{$firstName}</strong>,</p>
-                            <p>Sua pré-matrícula foi recebida com sucesso. Nossos atendentes entrarão em contato com você em breve.</p>
-                            
-                            <div style='background-color: #e8f4fc; padding: 15px; margin: 20px 0;'>
-                                <h3>Informações da Pré-matrícula:</h3>
-                                <p><strong>Polo:</strong> {$poloName}</p>
-                                <p><strong>Curso:</strong> {$categoryName}</p>
-                            </div>
-                            
-                            <p>Caso tenha alguma dúvida, sinta-se à vontade para entrar em contato.</p>
-                            
-                            <p>
-                            Atenciosamente,<br>
-                            Equipe de Matrículas - Polo {$poloName}
-                            </p>
-                        </div>
+        // Preparar o e-mail do aluno
+        $subject = 'Confirmação de Pré-matrícula - ' . $categoryName . ' - Polo ' . $poloName;
+        
+        // Conteúdo do e-mail para o aluno
+        $htmlMessage = "
+        <html>
+        <head>
+            <title>Confirmação de Pré-matrícula</title>
+        </head>
+        <body>
+            <div style='max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;'>
+                <div style='background-color: #3498db; color: white; padding: 15px; text-align: center;'>
+                    <h2>Pré-matrícula Recebida!</h2>
+                </div>
+                <div style='padding: 20px;'>
+                    <p>Olá <strong>{$firstName}</strong>,</p>
+                    <p>Sua pré-matrícula foi recebida com sucesso. Nossos atendentes entrarão em contato com você em breve.</p>
+                    
+                    <div style='background-color: #e8f4fc; padding: 15px; margin: 20px 0;'>
+                        <h3>Informações da Pré-matrícula:</h3>
+                        <p><strong>Polo:</strong> {$poloName}</p>
+                        <p><strong>Curso:</strong> {$categoryName}</p>
                     </div>
-                </body>
-                </html>
-                ";
-                
-                $emailSent = sendEmail($email, $subject, $htmlMessage);
-            }
+                    
+                    <p>Caso tenha alguma dúvida, sinta-se à vontade para entrar em contato.</p>
+                    
+                    <p>
+                    Atenciosamente,<br>
+                    Equipe de Matrículas - Polo {$poloName}
+                    </p>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
+        
+        // Usar diretamente sendEmailWithSMTP se disponível
+        if ($useSMTP && function_exists('sendEmailWithSMTP')) {
+            $emailSent = sendEmailWithSMTP(
+                $email, 
+                $subject, 
+                $htmlMessage, 
+                $smtpConfig['from_email'], 
+                $smtpConfig['from_name'],
+                $smtpConfig
+            );
+            
+            $method = "smtp";
+        } else {
+            // Fallback para sendEmail
+            $emailSent = sendEmail($email, $subject, $htmlMessage);
+            $method = "mail";
         }
+        
+        // Registrar o resultado
+        $emailLog = "==== EMAIL ALUNO (" . date('Y-m-d H:i:s') . ") ====\n";
+        $emailLog .= "Método: $method | Para: $email | Resultado: " . ($emailSent ? "ENVIADO" : "FALHA") . "\n";
+        $emailLog .= "==============================\n";
+        file_put_contents('prematricula_email.log', $emailLog, FILE_APPEND);
+        
     } catch (Exception $e) {
         $errorLog = "==== EMAIL ALUNO ERRO (" . date('Y-m-d H:i:s') . ") ====\n";
         $errorLog .= "Para: $email | Erro: " . $e->getMessage() . "\n";
@@ -248,26 +280,13 @@ try {
         file_put_contents('prematricula_email_error.log', $errorLog, FILE_APPEND);
     }
     
-    $emailLog = "==== EMAIL ALUNO (" . date('Y-m-d H:i:s') . ") ====\n";
-    $emailLog .= "Para: $email | Resultado: " . ($emailSent ? "ENVIADO" : "FALHA") . "\n";
-    $emailLog .= "==============================\n";
-    file_put_contents('prematricula_email.log', $emailLog, FILE_APPEND);
-    
-    // Enviar notificação para o administrador - ATENÇÃO: PARTE CRÍTICA
+    // Enviar notificação para o administrador
     $adminEmailSent = false;
     try {
-        // Verificar se o arquivo mail_helper existe
-        if (!file_exists('simple_mail_helper.php')) {
-            throw new Exception('Arquivo simple_mail_helper.php não encontrado');
-        }
-        
-        // Incluir o helper de email
-        require_once('simple_mail_helper.php');
-        
-        // MÉTODO DIRETO: Enviar email diretamente para o administrador
-        // Este método não depende de outras funções personalizadas
+        // Preparar o e-mail do administrador
         $subject = 'Nova Pré-matrícula: ' . $firstName . ' ' . $lastName . ' - ' . $categoryName;
         
+        // Conteúdo do e-mail para o administrador
         $htmlMessage = "
         <html>
         <head>
@@ -294,7 +313,7 @@ try {
                     <p>Por favor, entre em contato com o aluno para discutir os detalhes de pagamento e finalizar o processo de matrícula.</p>
                     
                     <div style='margin: 30px auto; text-align: center;'>
-                        <a href='admin/prematriculas.php?key=admin123' style='display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;'>
+                        <a href='https://inscricao.imepedu.com.br/admin/prematriculas.php?key=admin123' style='display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;'>
                             Gerenciar Pré-matrículas
                         </a>
                     </div>
@@ -308,42 +327,29 @@ try {
         </html>
         ";
         
-        // Enviar diretamente usando a função sendEmail
-        if (function_exists('sendEmail')) {
-            $adminEmailSent = sendEmail($ADMIN_EMAIL, $subject, $htmlMessage);
+        // Usar o mesmo método que foi usado para o aluno
+        if ($useSMTP && function_exists('sendEmailWithSMTP')) {
+            $adminEmailSent = sendEmailWithSMTP(
+                $ADMIN_EMAIL, 
+                $subject, 
+                $htmlMessage, 
+                $smtpConfig['from_email'], 
+                $smtpConfig['from_name'],
+                $smtpConfig
+            );
             
-            $adminLog = "==== EMAIL ADMIN DIRETO (" . date('Y-m-d H:i:s') . ") ====\n";
-            $adminLog .= "Para: $ADMIN_EMAIL | Resultado: " . ($adminEmailSent ? "ENVIADO" : "FALHA") . "\n";
-            $adminLog .= "==============================\n";
-            file_put_contents('prematricula_admin_email.log', $adminLog, FILE_APPEND);
+            $method = "smtp";
         } else {
-            throw new Exception('Função sendEmail não encontrada');
+            // Fallback para sendEmail
+            $adminEmailSent = sendEmail($ADMIN_EMAIL, $subject, $htmlMessage);
+            $method = "mail";
         }
         
-        // MÉTODO SECUNDÁRIO: Tenta usar a função específica de admin como backup
-        if (!$adminEmailSent && function_exists('sendAdminNotificationEmail')) {
-            try {
-                $adminEmailSent = sendAdminNotificationEmail(
-                    $firstName, 
-                    $lastName, 
-                    $email, 
-                    $phone, 
-                    $categoryName, 
-                    $poloName, 
-                    $prematriculaId
-                );
-                
-                $adminLog = "==== EMAIL ADMIN FUNÇÃO (" . date('Y-m-d H:i:s') . ") ====\n";
-                $adminLog .= "Para: $ADMIN_EMAIL | Resultado: " . ($adminEmailSent ? "ENVIADO" : "FALHA") . "\n";
-                $adminLog .= "==============================\n";
-                file_put_contents('prematricula_admin_email.log', $adminLog, FILE_APPEND);
-            } catch (Exception $e) {
-                $errorLog = "==== EMAIL ADMIN FUNÇÃO ERRO (" . date('Y-m-d H:i:s') . ") ====\n";
-                $errorLog .= "Erro: " . $e->getMessage() . "\n";
-                $errorLog .= "==============================\n";
-                file_put_contents('prematricula_admin_error.log', $errorLog, FILE_APPEND);
-            }
-        }
+        // Registrar o resultado
+        $adminLog = "==== EMAIL ADMIN (" . date('Y-m-d H:i:s') . ") ====\n";
+        $adminLog .= "Método: $method | Para: $ADMIN_EMAIL | Resultado: " . ($adminEmailSent ? "ENVIADO" : "FALHA") . "\n";
+        $adminLog .= "==============================\n";
+        file_put_contents('prematricula_admin_email.log', $adminLog, FILE_APPEND);
         
     } catch (Exception $e) {
         $errorLog = "==== EMAIL ADMIN ERRO (" . date('Y-m-d H:i:s') . ") ====\n";
@@ -355,8 +361,8 @@ try {
     // Log final de sucesso
     $successLog = "==== SUCESSO FINAL (" . date('Y-m-d H:i:s') . ") ====\n";
     $successLog .= "ID: $prematriculaId | Aluno: $firstName $lastName\n";
-    $successLog .= "Email Aluno: " . ($emailSent ? "ENVIADO" : "FALHA") . "\n";
-    $successLog .= "Email Admin: " . ($adminEmailSent ? "ENVIADO" : "FALHA") . "\n";
+    $successLog .= "Email Aluno: " . ($emailSent ? "ENVIADO ($method)" : "FALHA") . "\n";
+    $successLog .= "Email Admin: " . ($adminEmailSent ? "ENVIADO ($method)" : "FALHA") . "\n";
     $successLog .= "==============================\n";
     file_put_contents('prematricula_success.log', $successLog, FILE_APPEND);
     

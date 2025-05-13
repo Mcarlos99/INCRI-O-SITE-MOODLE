@@ -1,12 +1,26 @@
 <?php
-// Incluir arquivo de configuração dos polos
-require_once('polo_config.php');
+/**
+ * Patch direto para process_prematricula.php
+ * 
+ * Este script garante o envio de notificações para o administrador.
+ * INSTRUÇÕES: 
+ * 1. Renomeie o arquivo process_prematricula.php atual para process_prematricula.php.bak
+ * 2. Faça upload deste arquivo como process_prematricula.php
+ * 3. Teste realizando uma pré-matrícula
+ */
+
+// Permitir acesso de qualquer origem (CORS)
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
 
 // Configurações do banco de dados - ajuste conforme seu ambiente
 $db_host = 'localhost';
 $db_name = 'inscricao';
 $db_user = 'inscricao';
 $db_pass = 'EHl20R5ahRvwF7yOP0Uv';
+
+// EMAIL DO ADMINISTRADOR - CONFIGURE AQUI
+$ADMIN_EMAIL = 'magalhaeseducacao.aedu@gmail.com';
 
 // Receber dados do formulário
 $firstName = $_POST['firstName'] ?? '';
@@ -24,22 +38,20 @@ $categoryName = $_POST['categoryName'] ?? '';
 $poloId = $_POST['poloId'] ?? '';
 $poloName = $_POST['poloName'] ?? '';
 
+// Registrar os dados recebidos no log (para diagnóstico)
+$requestLog = "==== REQUISIÇÃO (" . date('Y-m-d H:i:s') . ") ====\n";
+foreach ($_POST as $key => $value) {
+    $requestLog .= "$key: $value\n";
+}
+$requestLog .= "==============================\n";
+file_put_contents('prematricula_request.log', $requestLog, FILE_APPEND);
+
 // Validação básica
 if (empty($firstName) || empty($lastName) || empty($email) || empty($phone) || 
     empty($cpf) || empty($categoryId) || empty($poloId)) {
     sendResponse(false, 'Campos obrigatórios não preenchidos');
     exit;
 }
-
-// Verificar se o polo existe na configuração
-if (!isset($POLO_CONFIG[$poloId])) {
-    sendResponse(false, 'Polo não encontrado na configuração');
-    exit;
-}
-
-// Obter configuração do polo selecionado
-$poloConfig = $POLO_CONFIG[$poloId];
-$MOODLE_URL = $poloConfig['moodle_url'];
 
 // Validar email
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -56,6 +68,9 @@ try {
     $stmt = $pdo->prepare("SELECT * FROM prematriculas WHERE email = ? AND category_id = ?");
     $stmt->execute([$email, $categoryId]);
     $existingPrematricula = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $prematriculaId = 0;
+    $emailType = 'new';
     
     if ($existingPrematricula) {
         // Se já existe e está pendente, atualizar os dados
@@ -88,15 +103,15 @@ try {
                 $existingPrematricula['id']
             ]);
             
-            // Enviar email de atualização da pré-matrícula
-            sendPreMatriculaEmail($email, $firstName, $categoryName, $poloName, 'update');
+            $prematriculaId = $existingPrematricula['id'];
+            $message = 'Pré-matrícula atualizada com sucesso';
+            $emailType = 'update';
             
-            sendResponse(true, 'Pré-matrícula atualizada com sucesso', [
-                'prematricula_id' => $existingPrematricula['id']
-            ]);
         } elseif ($existingPrematricula['status'] === 'approved') {
             // Se já está aprovada, informar o usuário
             sendResponse(false, 'Você já está matriculado neste curso. Por favor, entre em contato com o suporte se precisar de ajuda para acessar sua conta.');
+            exit;
+            
         } else {
             // Se foi rejeitada, permitir nova solicitação
             $stmt = $pdo->prepare("
@@ -128,12 +143,9 @@ try {
                 $existingPrematricula['id']
             ]);
             
-            // Enviar email de nova solicitação de pré-matrícula
-            sendPreMatriculaEmail($email, $firstName, $categoryName, $poloName, 'renew');
-            
-            sendResponse(true, 'Nova solicitação de pré-matrícula enviada com sucesso', [
-                'prematricula_id' => $existingPrematricula['id']
-            ]);
+            $prematriculaId = $existingPrematricula['id'];
+            $message = 'Nova solicitação de pré-matrícula enviada com sucesso';
+            $emailType = 'renew';
         }
     } else {
         // Inserir nova pré-matrícula
@@ -169,164 +181,209 @@ try {
         ]);
         
         $prematriculaId = $pdo->lastInsertId();
-        
-        // Enviar email de confirmação da pré-matrícula
-        sendPreMatriculaEmail($email, $firstName, $categoryName, $poloName, 'new');
-        
-        // Enviar email de notificação para o administrador
-        sendAdminNotificationEmail($firstName, $lastName, $email, $phone, $categoryName, $poloName, $prematriculaId);
-        
-        sendResponse(true, 'Pré-matrícula enviada com sucesso', [
-            'prematricula_id' => $prematriculaId
-        ]);
+        $message = 'Pré-matrícula enviada com sucesso';
+        $emailType = 'new';
     }
+    
+    // Log de sucesso no banco
+    $dbLog = "==== BD SUCESSO (" . date('Y-m-d H:i:s') . ") ====\n";
+    $dbLog .= "ID: $prematriculaId | Email: $email | Tipo: $emailType\n";
+    $dbLog .= "==============================\n";
+    file_put_contents('prematricula_db.log', $dbLog, FILE_APPEND);
+    
+    // Enviar email para o aluno
+    $emailSent = false;
+    try {
+        // Verificar se existe o arquivo de funções de email
+        if (file_exists('simple_email_functions.php')) {
+            require_once('simple_email_functions.php');
+            
+            if (function_exists('sendPreMatriculaEmail')) {
+                $emailSent = sendPreMatriculaEmail($email, $firstName, $categoryName, $poloName, $emailType);
+            } else if (function_exists('sendEmail')) {
+                // Fallback: enviar email diretamente
+                require_once('simple_mail_helper.php');
+                
+                $subject = 'Confirmação de Pré-matrícula - ' . $categoryName . ' - Polo ' . $poloName;
+                
+                $htmlMessage = "
+                <html>
+                <head>
+                    <title>Confirmação de Pré-matrícula</title>
+                </head>
+                <body>
+                    <div style='max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;'>
+                        <div style='background-color: #3498db; color: white; padding: 15px; text-align: center;'>
+                            <h2>Pré-matrícula Recebida!</h2>
+                        </div>
+                        <div style='padding: 20px;'>
+                            <p>Olá <strong>{$firstName}</strong>,</p>
+                            <p>Sua pré-matrícula foi recebida com sucesso. Nossos atendentes entrarão em contato com você em breve.</p>
+                            
+                            <div style='background-color: #e8f4fc; padding: 15px; margin: 20px 0;'>
+                                <h3>Informações da Pré-matrícula:</h3>
+                                <p><strong>Polo:</strong> {$poloName}</p>
+                                <p><strong>Curso:</strong> {$categoryName}</p>
+                            </div>
+                            
+                            <p>Caso tenha alguma dúvida, sinta-se à vontade para entrar em contato.</p>
+                            
+                            <p>
+                            Atenciosamente,<br>
+                            Equipe de Matrículas - Polo {$poloName}
+                            </p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+                ";
+                
+                $emailSent = sendEmail($email, $subject, $htmlMessage);
+            }
+        }
+    } catch (Exception $e) {
+        $errorLog = "==== EMAIL ALUNO ERRO (" . date('Y-m-d H:i:s') . ") ====\n";
+        $errorLog .= "Para: $email | Erro: " . $e->getMessage() . "\n";
+        $errorLog .= "==============================\n";
+        file_put_contents('prematricula_email_error.log', $errorLog, FILE_APPEND);
+    }
+    
+    $emailLog = "==== EMAIL ALUNO (" . date('Y-m-d H:i:s') . ") ====\n";
+    $emailLog .= "Para: $email | Resultado: " . ($emailSent ? "ENVIADO" : "FALHA") . "\n";
+    $emailLog .= "==============================\n";
+    file_put_contents('prematricula_email.log', $emailLog, FILE_APPEND);
+    
+    // Enviar notificação para o administrador - ATENÇÃO: PARTE CRÍTICA
+    $adminEmailSent = false;
+    try {
+        // Verificar se o arquivo mail_helper existe
+        if (!file_exists('simple_mail_helper.php')) {
+            throw new Exception('Arquivo simple_mail_helper.php não encontrado');
+        }
+        
+        // Incluir o helper de email
+        require_once('simple_mail_helper.php');
+        
+        // MÉTODO DIRETO: Enviar email diretamente para o administrador
+        // Este método não depende de outras funções personalizadas
+        $subject = 'Nova Pré-matrícula: ' . $firstName . ' ' . $lastName . ' - ' . $categoryName;
+        
+        $htmlMessage = "
+        <html>
+        <head>
+            <title>Nova Pré-matrícula</title>
+        </head>
+        <body>
+            <div style='max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;'>
+                <div style='background-color: #3498db; color: white; padding: 15px; text-align: center;'>
+                    <h2>Nova Pré-matrícula Recebida</h2>
+                </div>
+                <div style='padding: 20px;'>
+                    <p>Uma nova solicitação de pré-matrícula foi recebida.</p>
+                    
+                    <div style='background-color: #f9f9f9; padding: 15px; margin: 20px 0;'>
+                        <h3>Informações do Aluno:</h3>
+                        <p><strong>Nome:</strong> {$firstName} {$lastName}</p>
+                        <p><strong>Email:</strong> {$email}</p>
+                        <p><strong>Telefone:</strong> {$phone}</p>
+                        <p><strong>Curso:</strong> {$categoryName}</p>
+                        <p><strong>Polo:</strong> {$poloName}</p>
+                        <p><strong>ID da Pré-matrícula:</strong> {$prematriculaId}</p>
+                    </div>
+                    
+                    <p>Por favor, entre em contato com o aluno para discutir os detalhes de pagamento e finalizar o processo de matrícula.</p>
+                    
+                    <div style='margin: 30px auto; text-align: center;'>
+                        <a href='admin/prematriculas.php?key=admin123' style='display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;'>
+                            Gerenciar Pré-matrículas
+                        </a>
+                    </div>
+                </div>
+                <div style='text-align: center; margin-top: 30px; font-size: 12px; color: #888;'>
+                    <p>Este é um email automático enviado pelo sistema de pré-matrículas.</p>
+                    <p>Data e hora: " . date('d/m/Y H:i:s') . "</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        ";
+        
+        // Enviar diretamente usando a função sendEmail
+        if (function_exists('sendEmail')) {
+            $adminEmailSent = sendEmail($ADMIN_EMAIL, $subject, $htmlMessage);
+            
+            $adminLog = "==== EMAIL ADMIN DIRETO (" . date('Y-m-d H:i:s') . ") ====\n";
+            $adminLog .= "Para: $ADMIN_EMAIL | Resultado: " . ($adminEmailSent ? "ENVIADO" : "FALHA") . "\n";
+            $adminLog .= "==============================\n";
+            file_put_contents('prematricula_admin_email.log', $adminLog, FILE_APPEND);
+        } else {
+            throw new Exception('Função sendEmail não encontrada');
+        }
+        
+        // MÉTODO SECUNDÁRIO: Tenta usar a função específica de admin como backup
+        if (!$adminEmailSent && function_exists('sendAdminNotificationEmail')) {
+            try {
+                $adminEmailSent = sendAdminNotificationEmail(
+                    $firstName, 
+                    $lastName, 
+                    $email, 
+                    $phone, 
+                    $categoryName, 
+                    $poloName, 
+                    $prematriculaId
+                );
+                
+                $adminLog = "==== EMAIL ADMIN FUNÇÃO (" . date('Y-m-d H:i:s') . ") ====\n";
+                $adminLog .= "Para: $ADMIN_EMAIL | Resultado: " . ($adminEmailSent ? "ENVIADO" : "FALHA") . "\n";
+                $adminLog .= "==============================\n";
+                file_put_contents('prematricula_admin_email.log', $adminLog, FILE_APPEND);
+            } catch (Exception $e) {
+                $errorLog = "==== EMAIL ADMIN FUNÇÃO ERRO (" . date('Y-m-d H:i:s') . ") ====\n";
+                $errorLog .= "Erro: " . $e->getMessage() . "\n";
+                $errorLog .= "==============================\n";
+                file_put_contents('prematricula_admin_error.log', $errorLog, FILE_APPEND);
+            }
+        }
+        
+    } catch (Exception $e) {
+        $errorLog = "==== EMAIL ADMIN ERRO (" . date('Y-m-d H:i:s') . ") ====\n";
+        $errorLog .= "Para: $ADMIN_EMAIL | Erro: " . $e->getMessage() . "\n";
+        $errorLog .= "==============================\n";
+        file_put_contents('prematricula_admin_error.log', $errorLog, FILE_APPEND);
+    }
+    
+    // Log final de sucesso
+    $successLog = "==== SUCESSO FINAL (" . date('Y-m-d H:i:s') . ") ====\n";
+    $successLog .= "ID: $prematriculaId | Aluno: $firstName $lastName\n";
+    $successLog .= "Email Aluno: " . ($emailSent ? "ENVIADO" : "FALHA") . "\n";
+    $successLog .= "Email Admin: " . ($adminEmailSent ? "ENVIADO" : "FALHA") . "\n";
+    $successLog .= "==============================\n";
+    file_put_contents('prematricula_success.log', $successLog, FILE_APPEND);
+    
+    // Enviar resposta de sucesso
+    sendResponse(true, $message, [
+        'prematricula_id' => $prematriculaId,
+        'email_sent' => $emailSent
+    ]);
     
 } catch (PDOException $e) {
-    sendResponse(false, 'Erro ao processar pré-matrícula: ' . $e->getMessage());
-}
-
-/**
- * Função para enviar e-mail de pré-matrícula para o aluno
- */
-function sendPreMatriculaEmail($email, $name, $categoryName, $poloName, $type = 'new') {
-    switch ($type) {
-        case 'update':
-            $subject = 'Atualização de Pré-matrícula - ' . $categoryName . ' - Polo ' . $poloName;
-            $title = 'Pré-matrícula Atualizada!';
-            $message = "Sua pré-matrícula foi atualizada com sucesso. Nossos atendentes entrarão em contato com você em breve para discutir os detalhes de pagamento e finalizar o processo de matrícula.";
-            break;
-            
-        case 'renew':
-            $subject = 'Nova Solicitação de Pré-matrícula - ' . $categoryName . ' - Polo ' . $poloName;
-            $title = 'Nova Solicitação Enviada!';
-            $message = "Sua nova solicitação de pré-matrícula foi enviada com sucesso. Nossos atendentes entrarão em contato com você em breve para discutir os detalhes de pagamento e finalizar o processo de matrícula.";
-            break;
-            
-        default: // new
-            $subject = 'Confirmação de Pré-matrícula - ' . $categoryName . ' - Polo ' . $poloName;
-            $title = 'Pré-matrícula Recebida!';
-            $message = "Sua pré-matrícula foi recebida com sucesso. Nossos atendentes entrarão em contato com você em breve para discutir os detalhes de pagamento e finalizar o processo de matrícula.";
-    }
+    // Log do erro
+    $errorLog = "==== ERRO PDO (" . date('Y-m-d H:i:s') . ") ====\n";
+    $errorLog .= "Mensagem: " . $e->getMessage() . "\n";
+    $errorLog .= "Arquivo: " . $e->getFile() . " (Linha: " . $e->getLine() . ")\n";
+    $errorLog .= "==============================\n";
+    file_put_contents('prematricula_error.log', $errorLog, FILE_APPEND);
     
-    $htmlMessage = "
-    <html>
-    <head>
-        <title>Confirmação de Pré-matrícula</title>
-        <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background-color: #3498db; color: white; padding: 15px; text-align: center; }
-            .content { padding: 20px; }
-            .course-info { background-color: #e8f4fc; padding: 15px; margin: 20px 0; }
-            .next-steps { background-color: #f9f9f9; padding: 15px; margin: 20px 0; border-left: 4px solid #3498db; }
-            .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #888; }
-        </style>
-    </head>
-    <body>
-        <div class='container'>
-            <div class='header'>
-                <h2>{$title}</h2>
-            </div>
-            <div class='content'>
-                <p>Olá <strong>{$name}</strong>,</p>
-                <p>{$message}</p>
-                
-                <div class='course-info'>
-                    <h3>Informações da Pré-matrícula:</h3>
-                    <p><strong>Polo:</strong> {$poloName}</p>
-                    <p><strong>Curso:</strong> {$categoryName}</p>
-                </div>
-                
-                <div class='next-steps'>
-                    <h3>Próximos Passos:</h3>
-                    <ol>
-                        <li>Nossa equipe entrará em contato com você em até 48 horas úteis.</li>
-                        <li>Você poderá escolher a forma de pagamento e discutir os valores com nosso atendente.</li>
-                        <li>Após confirmação do pagamento, sua matrícula será ativada.</li>
-                        <li>Você receberá um email com as credenciais de acesso à plataforma.</li>
-                    </ol>
-                </div>
-                
-                <p>Caso tenha alguma dúvida, sinta-se à vontade para entrar em contato pelo telefone (91) 3456-7890 ou responder a este email.</p>
-                
-                <p>
-                Atenciosamente,<br>
-                Equipe de Matrículas - Polo {$poloName}
-                </p>
-            </div>
-            <div class='footer'>
-                <p>Este é um email automático enviado após sua solicitação de pré-matrícula.</p>
-            </div>
-        </div>
-    </body>
-    </html>
-    ";
+    sendResponse(false, 'Erro ao processar pré-matrícula. Por favor, tente novamente.');
+} catch (Exception $e) {
+    // Log do erro
+    $errorLog = "==== ERRO GERAL (" . date('Y-m-d H:i:s') . ") ====\n";
+    $errorLog .= "Mensagem: " . $e->getMessage() . "\n";
+    $errorLog .= "Arquivo: " . $e->getFile() . " (Linha: " . $e->getLine() . ")\n";
+    $errorLog .= "==============================\n";
+    file_put_contents('prematricula_error.log', $errorLog, FILE_APPEND);
     
-    // Headers para enviar e-mail em formato HTML
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: matriculas@imepedu.com.br" . "\r\n";
-    
-    // Enviar email
-    return mail($email, $subject, $htmlMessage, $headers);
-}
-
-/**
- * Função para enviar e-mail de notificação para o administrador
- */
-function sendAdminNotificationEmail($firstName, $lastName, $email, $phone, $categoryName, $poloName, $prematriculaId) {
-    // Email do administrador - ajuste conforme necessário
-    $adminEmail = 'admin@imepedu.com.br';
-    
-    $subject = 'Nova Pré-matrícula: ' . $firstName . ' ' . $lastName . ' - ' . $categoryName;
-    
-    $htmlMessage = "
-    <html>
-    <head>
-        <title>Nova Pré-matrícula</title>
-        <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background-color: #3498db; color: white; padding: 15px; text-align: center; }
-            .content { padding: 20px; }
-            .student-info { background-color: #f9f9f9; padding: 15px; margin: 20px 0; }
-            .action-button { display: block; width: 200px; margin: 20px auto; padding: 10px; background-color: #3498db; color: white; text-align: center; text-decoration: none; border-radius: 5px; }
-        </style>
-    </head>
-    <body>
-        <div class='container'>
-            <div class='header'>
-                <h2>Nova Pré-matrícula Recebida</h2>
-            </div>
-            <div class='content'>
-                <p>Uma nova solicitação de pré-matrícula foi recebida.</p>
-                
-                <div class='student-info'>
-                    <h3>Informações do Aluno:</h3>
-                    <p><strong>Nome:</strong> {$firstName} {$lastName}</p>
-                    <p><strong>Email:</strong> {$email}</p>
-                    <p><strong>Telefone:</strong> {$phone}</p>
-                    <p><strong>Curso:</strong> {$categoryName}</p>
-                    <p><strong>Polo:</strong> {$poloName}</p>
-                    <p><strong>ID da Pré-matrícula:</strong> {$prematriculaId}</p>
-                </div>
-                
-                <p>Por favor, entre em contato com o aluno para discutir os detalhes de pagamento e finalizar o processo de matrícula.</p>
-                
-                <a href='admin/prematriculas.php' class='action-button'>Gerenciar Pré-matrículas</a>
-            </div>
-        </div>
-    </body>
-    </html>
-    ";
-    
-    // Headers para enviar e-mail em formato HTML
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: sistema@imepedu.com.br" . "\r\n";
-    
-    // Enviar email
-    return mail($adminEmail, $subject, $htmlMessage, $headers);
+    sendResponse(false, 'Erro ao processar pré-matrícula. Por favor, tente novamente.');
 }
 
 /**

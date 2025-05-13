@@ -8,9 +8,9 @@ if ($admin_key !== 'admin123') {
 
 // Configurações do banco de dados - ajuste conforme seu ambiente
 $db_host = 'localhost';
-$db_name = 'prematriculas';
-$db_user = 'root';
-$db_pass = '';
+$db_name = 'inscricao';
+$db_user = 'inscricao';
+$db_pass = 'EHl20R5ahRvwF7yOP0Uv';
 
 // Incluir arquivo de configuração dos polos
 require_once('../polo_config.php');
@@ -377,6 +377,9 @@ function generatePassword($length = 12) {
  * Função para enviar e-mail de aprovação para o aluno
  */
 function sendApprovalEmail($email, $name, $categoryName, $poloName, $username, $password, $moodleUrl, $coursesCount) {
+    // Incluir o helper de email
+    require_once(__DIR__ . '/../mail_helper.php');
+    
     $subject = 'Matrícula Aprovada - ' . $categoryName . ' - Polo ' . $poloName;
     
     $htmlMessage = "
@@ -434,19 +437,17 @@ function sendApprovalEmail($email, $name, $categoryName, $poloName, $username, $
     </html>
     ";
     
-    // Headers para enviar e-mail em formato HTML
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: matriculas@imepedu.com.br" . "\r\n";
-    
-    // Enviar email
-    return mail($email, $subject, $htmlMessage, $headers);
+    // Usar a função melhorada de envio de email
+    return sendEmail($email, $subject, $htmlMessage);
 }
 
 /**
  * Função para enviar e-mail de rejeição para o aluno
  */
 function sendRejectionEmail($email, $name, $categoryName, $poloName, $reason) {
+    // Incluir o helper de email
+    require_once(__DIR__ . '/../mail_helper.php');
+    
     $subject = 'Informação Sobre Pré-matrícula - ' . $categoryName . ' - Polo ' . $poloName;
     
     $htmlMessage = "
@@ -491,13 +492,8 @@ function sendRejectionEmail($email, $name, $categoryName, $poloName, $reason) {
     </html>
     ";
     
-    // Headers para enviar e-mail em formato HTML
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-    $headers .= "From: matriculas@imepedu.com.br" . "\r\n";
-    
-    // Enviar email
-    return mail($email, $subject, $htmlMessage, $headers);
+    // Usar a função melhorada de envio de email
+    return sendEmail($email, $subject, $htmlMessage);
 }
 
 // Obter lista de pré-matrículas
@@ -580,8 +576,8 @@ try {
         
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
-                <h5 class="m-0">Lista de Pré-matrículas <?php echo ucfirst($status_filter); ?></h5>
-            </div>
+			<h5 class="m-0">Lista de Pré-matrículas <?php echo ucfirst(isset($status_filter) ? $status_filter : 'pending'); ?></h5>
+          </div>
             <div class="card-body">
                 <?php if (empty($prematriculas)): ?>
                     <div class="alert alert-info">Nenhuma pré-matrícula encontrada.</div>

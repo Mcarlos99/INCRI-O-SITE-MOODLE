@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Matrícula - Cursos Online</title>
+    <title>Sistema de Pré-Matrícula - Cursos Online</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -242,7 +242,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fas fa-graduation-cap me-2"></i>IMEPE EAD
+                <i class="fas fa-graduation-cap me-2"></i>IMEP EDU
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -269,8 +269,8 @@
     <!-- Header -->
     <div class="header-container">
         <div class="container text-center">
-            <h1>Matrícula em Cursos Online</h1>
-            <p class="lead">Complete os passos abaixo para se inscrever em nossos cursos</p>
+            <h1>Pré-Matrícula em Cursos Online</h1>
+            <p class="lead">Complete os passos abaixo para solicitar sua pré-matrícula em nossos cursos</p>
         </div>
     </div>
 
@@ -298,7 +298,7 @@
 
         <!-- Form Container -->
         <div class="form-container">
-            <form id="enrollmentForm">
+            <form id="prematriculaForm">
                 <!-- Step 1: Polo Selection -->
                 <div class="form-step active" id="formStep1">
                     <h2>Escolha seu Polo</h2>
@@ -392,28 +392,27 @@
                     
                     <input type="hidden" id="selectedPoloId" name="poloId" value="">
                     <input type="hidden" id="selectedPoloName" name="poloName" value="">
-                    <input type="hidden" id="moodleUrl" name="moodleUrl" value="">
                     
                     <div class="d-flex justify-content-end mt-4">
                         <button type="button" class="btn btn-primary" id="step1Next" disabled>Próximo <i class="fas fa-arrow-right ms-2"></i></button>
                     </div>
                 </div>
                 
-                <!-- Step 2: Course Selection -->
+                <!-- Step 2: Category Selection -->
                 <div class="form-step" id="formStep2">
                     <h2>Escolha seu Curso</h2>
                     <p class="mb-4">Selecione um dos cursos disponíveis no polo <strong id="selectedPoloDisplay"></strong>:</p>
                     
-                    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4" id="coursesContainer">
-                        <!-- Os cursos serão carregados dinamicamente aqui -->
+                    <div class="row row-cols-1 row-cols-md-2 g-4 mb-4" id="categoriesContainer">
+                        <!-- As categorias serão carregadas dinamicamente aqui -->
                         <div class="col-12 text-center">
                             <p>Carregando cursos disponíveis...</p>
                             <div class="spinner-border text-primary" role="status"></div>
                         </div>
                     </div>
                     
-                    <input type="hidden" id="selectedCourseId" name="courseId" value="">
-                    <input type="hidden" id="selectedCourseName" name="courseName" value="">
+                    <input type="hidden" id="selectedCategoryId" name="categoryId" value="">
+                    <input type="hidden" id="selectedCategoryName" name="categoryName" value="">
                     
                     <div class="d-flex justify-content-between mt-4">
                         <button type="button" class="btn btn-outline-primary" id="step2Prev">
@@ -428,7 +427,7 @@
                 <!-- Step 3: Personal Information -->
                 <div class="form-step" id="formStep3">
                     <h2>Dados Pessoais</h2>
-                    <p class="mb-4">Preencha suas informações pessoais para completar a matrícula:</p>
+                    <p class="mb-4">Preencha suas informações pessoais para completar a pré-matrícula:</p>
                     
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -444,7 +443,7 @@
                     <div class="mb-3">
                         <label for="email" class="form-label">Email*</label>
                         <input type="email" class="form-control" id="email" name="email" required>
-                        <div class="form-text">Este será seu login para acesso ao curso.</div>
+                        <div class="form-text">Este será seu login para acesso ao curso após aprovação.</div>
                     </div>
                     
                     <div class="row mb-3">
@@ -538,12 +537,12 @@
                 
                 <!-- Step 4: Confirmation -->
                 <div class="form-step" id="formStep4">
-                    <h2>Confirmação da Matrícula</h2>
-                    <p class="mb-4">Verifique os detalhes da sua matrícula antes de finalizar:</p>
+                    <h2>Confirmação da Pré-Matrícula</h2>
+                    <p class="mb-4">Verifique os detalhes da sua pré-matrícula antes de finalizar:</p>
                     
                     <div class="card mb-4">
                         <div class="card-header bg-primary text-white">
-                            <h5 class="m-0">Resumo da Matrícula</h5>
+                            <h5 class="m-0">Resumo da Pré-Matrícula</h5>
                         </div>
                         <div class="card-body">
                             <div class="row mb-3">
@@ -574,8 +573,8 @@
                     </div>
                     
                     <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i> Ao finalizar, você será registrado automaticamente no curso selecionado. 
-                        As credenciais de acesso serão enviadas para o seu email.
+                        <i class="fas fa-info-circle me-2"></i> Ao finalizar, sua solicitação de pré-matrícula será enviada para análise.
+                        Após aprovação, nossa equipe entrará em contato para finalizar o processo de matrícula.
                     </div>
                     
                     <div class="d-flex justify-content-between mt-4">
@@ -583,7 +582,7 @@
                             <i class="fas fa-arrow-left me-2"></i> Voltar
                         </button>
                         <button type="submit" class="btn btn-success" id="submitBtn">
-                            <i class="fas fa-check-circle me-2"></i> Finalizar Matrícula
+                            <i class="fas fa-check-circle me-2"></i> Enviar Pré-Matrícula
                         </button>
                     </div>
                 </div>
@@ -596,7 +595,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4 mb-md-0">
-                    <h5>IMEPE EAD</h5>
+                    <h5>IMEP EDU</h5>
                     <p>Transformando vidas através da educação online de qualidade.</p>
                 </div>
                 <div class="col-md-4 mb-4 mb-md-0">
@@ -612,14 +611,14 @@
                     <h5>Contato</h5>
                     <ul class="list-unstyled">
                         <li><i class="fas fa-envelope me-2"></i> contato@imepedu.com.br</li>
-                        <li><i class="fas fa-phone me-2"></i> (91) 3456-7890</li>
-                        <li><i class="fas fa-map-marker-alt me-2"></i> Belém, PA</li>
+                        <li><i class="fas fa-phone me-2"></i> (94) 98170-XXXX</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Tucuruí, PA</li>
                     </ul>
                 </div>
             </div>
             <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.1);">
             <div class="text-center">
-                <p class="mb-0">&copy; 2025 IMEPE EAD. Todos os direitos reservados.</p>
+                <p class="mb-0">&copy; 2025 IMEP EDU. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -666,22 +665,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title">Matrícula Realizada com Sucesso!</h5>
+                    <h5 class="modal-title">Pré-Matrícula Realizada com Sucesso!</h5>
                 </div>
                 <div class="modal-body text-center">
                     <i class="fas fa-check-circle text-success" style="font-size: 64px; margin: 20px 0;"></i>
                     <h4>Parabéns!</h4>
-                    <p>Sua matrícula foi realizada com sucesso no polo <strong id="modalPoloName"></strong>.</p>
-                    <p>Enviamos um email com suas credenciais de acesso para o curso.</p>
+                    <p>Sua solicitação de pré-matrícula foi enviada com sucesso para o polo <strong id="modalPoloName"></strong>.</p>
+                    <p>Nossa equipe entrará em contato com você em breve para dar continuidade ao processo de matrícula.</p>
                     <div class="alert alert-info mt-3">
-                        <p class="mb-0">URL do Moodle: <span id="modalMoodleUrl"></span></p>
-                        <p class="mb-0">Nome de usuário: <span id="modalUsername"></span></p>
-                        <p class="mb-0">Senha inicial: <span id="modalPassword"></span></p>
+                        <p class="mb-0">Um email de confirmação foi enviado para <span id="modalEmail"></span></p>
                     </div>
-                    <p class="mt-3">Recomendamos alterar sua senha no primeiro acesso.</p>
+                    <p class="mt-3">Se tiver dúvidas, entre em contato com nossa central de atendimento.</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="#" id="goToMoodleLink" class="btn btn-primary" target="_blank">Ir para a Plataforma de Cursos</a>
+                    <a href="index.html" class="btn btn-primary">Voltar para o Início</a>
                 </div>
             </div>
         </div>
@@ -695,9 +692,8 @@
         let currentStep = 1;
         let selectedPoloId = null;
         let selectedPoloName = null;
-        let selectedMoodleUrl = null; // Nova variável para armazenar a URL do Moodle
-        let selectedCourseId = null;
-        let selectedCourseName = null;
+        let selectedCategoryId = null;
+        let selectedCategoryName = null;
 
         // Função para selecionar polo
         function selectPolo(poloId, poloName) {
@@ -721,91 +717,88 @@
             document.getElementById('step1Next').disabled = false;
         }
 
-        // Função para selecionar curso
-        function selectCourse(courseId, courseName) {
-            // Remover seleção de todos os cursos
-            document.querySelectorAll('.course-card').forEach(card => {
+        // Função para selecionar categoria
+        function selectCategory(categoryId, categoryName) {
+            // Remover seleção de todas as categorias
+            document.querySelectorAll('.category-card').forEach(card => {
                 card.classList.remove('selected');
             });
             
-            // Adicionar seleção ao curso clicado
-            document.getElementById('course' + courseId).classList.add('selected');
+            // Adicionar seleção à categoria clicada
+            document.getElementById('category' + categoryId).classList.add('selected');
             
-            // Armazenar informações do curso
-            selectedCourseId = courseId;
-            selectedCourseName = courseName;
+            // Armazenar informações da categoria
+            selectedCategoryId = categoryId;
+            selectedCategoryName = categoryName;
             
             // Atualizar campos ocultos
-            document.getElementById('selectedCourseId').value = courseId;
-            document.getElementById('selectedCourseName').value = courseName;
+            document.getElementById('selectedCategoryId').value = categoryId;
+            document.getElementById('selectedCategoryName').value = categoryName;
             
             // Habilitar botão de próximo
             document.getElementById('step2Next').disabled = false;
         }
 
-        // Função para carregar cursos do polo selecionado
-        function loadCoursesForPolo(poloId) {
-            const coursesContainer = document.getElementById('coursesContainer');
+        // Função para carregar categorias do polo selecionado
+        function loadCategoriesForPolo(poloId) {
+            const categoriesContainer = document.getElementById('categoriesContainer');
             
             // Mostrar indicador de carregamento
-            coursesContainer.innerHTML = '<div class="col-12 text-center"><p>Carregando cursos disponíveis...</p><div class="spinner-border text-primary" role="status"></div></div>';
+            categoriesContainer.innerHTML = '<div class="col-12 text-center"><p>Carregando cursos disponíveis...</p><div class="spinner-border text-primary" role="status"></div></div>';
             
-            // Buscar cursos do polo
-            fetch('get_courses_by_polo.php?polo=' + poloId)
+            // Buscar categorias do polo
+            fetch('get_categories_by_polo.php?polo=' + poloId)
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Armazenar URL do Moodle para este polo
-                        selectedMoodleUrl = data.moodle_url;
-                        document.getElementById('moodleUrl').value = data.moodle_url;
-                        
-                        if (data.courses.length === 0) {
-                            coursesContainer.innerHTML = '<div class="col-12"><div class="alert alert-warning">Nenhum curso disponível neste polo. Por favor, selecione outro polo ou entre em contato com o administrador.</div></div>';
+                        if (data.categories.length === 0) {
+                            categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-warning">Nenhum curso disponível neste polo. Por favor, selecione outro polo ou entre em contato com o administrador.</div></div>';
                             return;
                         }
                         
                         // Limpar container
-                        coursesContainer.innerHTML = '';
+                        categoriesContainer.innerHTML = '';
                         
-                        // Adicionar cada curso
-                        data.courses.forEach(course => {
-                            const courseHtml = `
+                        // Adicionar cada categoria
+                        data.categories.forEach(category => {
+                            const categoryHtml = `
                             <div class="col">
-                                <div class="course-card" id="course${course.id}" onclick="selectCourse(${course.id}, '${course.name.replace(/'/g, "\\'")}')">
+                                <div class="course-card category-card" id="category${category.id}" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}')">
                                     <div class="course-header">
-                                        <h5 class="m-0">${course.name}</h5>
+                                        <h5 class="m-0">${category.name}</h5>
                                     </div>
                                     <div class="course-body">
-                                        <p>${course.summary || 'Aprenda em um ambiente flexível e adaptado às suas necessidades.'}</p>
-                                        <div class="course-price">R$ 297,00</div>
+                                        <p>${category.description || 'Formação completa com certificação reconhecida pelo MEC.'}</p>
+                                        <div class="course-price">R$ ${category.price || '297,00'}</div>
                                         <ul class="mb-3">
-                                            <li>40 horas de conteúdo</li>
+                                            <li>${category.duration || '6 meses'} de duração</li>
                                             <li>Certificado incluído</li>
-                                            <li>Acesso por 1 ano</li>
+                                            <li>Material didático digital</li>
+                                            <li>Suporte individualizado</li>
                                         </ul>
-                                        <button type="button" class="btn btn-outline-primary w-100" onclick="selectCourse(${course.id}, '${course.name.replace(/'/g, "\\'")}')">Selecionar</button>
+                                        <button type="button" class="btn btn-outline-primary w-100" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}')">Selecionar</button>
                                     </div>
                                 </div>
                             </div>
                             `;
                             
-                            coursesContainer.innerHTML += courseHtml;
+                            categoriesContainer.innerHTML += categoryHtml;
                         });
                         
-                        // Resetar seleção de curso
-                        selectedCourseId = null;
-                        selectedCourseName = null;
-                        document.getElementById('selectedCourseId').value = '';
-                        document.getElementById('selectedCourseName').value = '';
+                        // Resetar seleção de categoria
+                        selectedCategoryId = null;
+                        selectedCategoryName = null;
+                        document.getElementById('selectedCategoryId').value = '';
+                        document.getElementById('selectedCategoryName').value = '';
                         document.getElementById('step2Next').disabled = true;
                         
                     } else {
-                        coursesContainer.innerHTML = `<div class="col-12"><div class="alert alert-danger">Erro ao carregar cursos: ${data.message}</div></div>`;
+                        categoriesContainer.innerHTML = `<div class="col-12"><div class="alert alert-danger">Erro ao carregar cursos: ${data.message}</div></div>`;
                     }
                 })
                 .catch(error => {
                     console.error('Erro:', error);
-                    coursesContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Erro ao comunicar com o servidor. Por favor, tente novamente mais tarde.</div></div>';
+                    categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Erro ao comunicar com o servidor. Por favor, tente novamente mais tarde.</div></div>';
                 });
         }
 
@@ -822,9 +815,9 @@
             
             // Ações específicas para cada etapa
             if (currentStep === 2) {
-                // Se avançou para etapa de seleção de curso, carregar cursos do polo
+                // Se avançou para etapa de seleção de categoria, carregar categorias do polo
                 document.getElementById('selectedPoloDisplay').textContent = selectedPoloName;
-                loadCoursesForPolo(selectedPoloId);
+                loadCategoriesForPolo(selectedPoloId);
             } else if (currentStep === 4) {
                 // Se avançou para etapa de confirmação, preencher resumo
                 populateSummary();
@@ -882,7 +875,7 @@
             const lastName = document.getElementById('lastName').value;
             
             document.getElementById('summaryPoloName').textContent = selectedPoloName;
-            document.getElementById('summaryCourseName').textContent = selectedCourseName;
+            document.getElementById('summaryCourseName').textContent = selectedCategoryName;
             document.getElementById('summaryName').textContent = firstName + ' ' + lastName;
             document.getElementById('summaryEmail').textContent = document.getElementById('email').value;
             document.getElementById('summaryPhone').textContent = document.getElementById('phone').value;
@@ -959,7 +952,7 @@
             document.getElementById('step4Prev').addEventListener('click', goToPrevStep);
             
             // Form submission
-            document.getElementById('enrollmentForm').addEventListener('submit', function(e) {
+            document.getElementById('prematriculaForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
                 // Mostrar overlay de carregamento
@@ -969,7 +962,7 @@
                 const formData = new FormData(this);
                 
                 // Enviar dados para o servidor
-                fetch('process_enrollment.php', {
+                fetch('process_prematricula.php', {
                     method: 'POST',
                     body: formData
                 })
@@ -979,19 +972,14 @@
                     document.getElementById('loadingOverlay').style.display = 'none';
                     
                     if (data.success) {
-                        // Mostrar modal de sucesso com credenciais
-                        document.getElementById('modalUsername').textContent = data.username;
-                        document.getElementById('modalPassword').textContent = data.password;
+                        // Mostrar modal de sucesso
                         document.getElementById('modalPoloName').textContent = selectedPoloName;
-                        document.getElementById('modalMoodleUrl').textContent = data.moodle_url;
-                        
-                        // Atualizar link para o Moodle
-                        document.getElementById('goToMoodleLink').href = data.moodle_url;
+                        document.getElementById('modalEmail').textContent = document.getElementById('email').value;
                         
                         new bootstrap.Modal(document.getElementById('successModal')).show();
                     } else {
                         // Mostrar mensagem de erro
-                        alert('Erro ao processar matrícula: ' + data.message);
+                        alert('Erro ao processar pré-matrícula: ' + data.message);
                     }
                 })
                 .catch(error => {
@@ -1000,7 +988,7 @@
                     
                     // Mostrar mensagem de erro
                     console.error('Erro:', error);
-                    alert('Ocorreu um erro ao processar sua matrícula. Por favor, tente novamente.');
+                    alert('Ocorreu um erro ao processar sua pré-matrícula. Por favor, tente novamente.');
                 });
             });
         });

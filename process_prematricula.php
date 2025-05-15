@@ -313,7 +313,7 @@ try {
                     <p>Por favor, entre em contato com o aluno para discutir os detalhes de pagamento e finalizar o processo de matrícula.</p>
                     
                     <div style='margin: 30px auto; text-align: center;'>
-                        <a href='admin/prematriculas.php?key=admin123' style='display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;'>
+                        <a href='https://inscricao.imepedu.com.br/admin/prematriculas.php?key=admin123' style='display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;'>
                             Gerenciar Pré-matrículas
                         </a>
                     </div>

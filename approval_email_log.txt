@@ -1,0 +1,8 @@
+[2025-05-13 16:53:52] Tentando enviar e-mail de aprovação para: maurocarlos.ti@gmail.com
+[2025-05-13 16:53:52] E-mail de aprovação enviado via SMTP: SUCESSO
+[2025-05-13 17:02:58] Tentando enviar e-mail de aprovação para: maurocarlos.ti@gmail.com
+[2025-05-13 17:02:58] E-mail de aprovação enviado via SMTP: SUCESSO
+[2025-05-13 17:16:06] Tentando enviar e-mail de aprovação para: maurocarlos.ti@gmail.com
+[2025-05-13 17:16:06] E-mail de aprovação enviado via SMTP: SUCESSO
+[2025-05-13 17:39:15] Tentando enviar e-mail de aprovação para: maurocarlos.ti@gmail.com | Nome: MAURO CARLOS | Login: maurocarlosti
+[2025-05-13 17:39:15] Resultado do envio para maurocarlos.ti@gmail.com: SUCESSO

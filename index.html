@@ -217,7 +217,13 @@
             display: none;
         }
         
-        .spinner {
+      .course-installments {
+    font-size: 1rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}  
+      .spinner {
             width: 40px;
             height: 40px;
             border: 4px solid #f3f3f3;
@@ -413,6 +419,8 @@
                     
                     <input type="hidden" id="selectedCategoryId" name="categoryId" value="">
                     <input type="hidden" id="selectedCategoryName" name="categoryName" value="">
+                	<input type="hidden" id="selectedCategoryPrice" name="coursePrice" value="">
+					<input type="hidden" id="selectedCategoryInstallments" name="courseInstallments" value="">
                     
                     <div class="d-flex justify-content-between mt-4">
                         <button type="button" class="btn btn-outline-primary" id="step2Prev">
@@ -569,6 +577,15 @@
                                 <div class="col-md-4 fw-bold">CPF:</div>
                                 <div class="col-md-8" id="summaryCPF"></div>
                             </div>
+                          <!-- Adicione estas linhas ao card de resumo da pré-matrícula (Step 4: Confirmation) -->
+							<div class="row mb-3" id="priceSummaryRow" style="display:none;">
+    							<div class="col-md-4 fw-bold">Valor do Curso:</div>
+    							<div class="col-md-8" id="summaryPrice"></div>
+							</div>
+							<div class="row mb-3" id="installmentsSummaryRow" style="display:none;">
+    							<div class="col-md-4 fw-bold">Parcelamento:</div>
+    							<div class="col-md-8" id="summaryInstallments"></div>
+							</div>
                         </div>
                     </div>
                     
@@ -689,11 +706,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
         // Variáveis globais
-        let currentStep = 1;
-        let selectedPoloId = null;
-        let selectedPoloName = null;
-        let selectedCategoryId = null;
-        let selectedCategoryName = null;
+
+	let currentStep = 1;
+	let selectedPoloId = null;
+	let selectedPoloName = null;
+	let selectedCategoryId = null;
+	let selectedCategoryName = null;
+	let selectedCategoryPrice = null;  // Nova variável para armazenar o preço
+	let selectedCategoryInstallments = null;  // Nova variável para armazenar o parcelamento
 
         // Função para selecionar polo
         function selectPolo(poloId, poloName) {
@@ -717,91 +737,102 @@
             document.getElementById('step1Next').disabled = false;
         }
 
-        // Função para selecionar categoria
-        function selectCategory(categoryId, categoryName) {
-            // Remover seleção de todas as categorias
-            document.querySelectorAll('.category-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            
-            // Adicionar seleção à categoria clicada
-            document.getElementById('category' + categoryId).classList.add('selected');
-            
-            // Armazenar informações da categoria
-            selectedCategoryId = categoryId;
-            selectedCategoryName = categoryName;
-            
-            // Atualizar campos ocultos
-            document.getElementById('selectedCategoryId').value = categoryId;
-            document.getElementById('selectedCategoryName').value = categoryName;
-            
-            // Habilitar botão de próximo
-            document.getElementById('step2Next').disabled = false;
-        }
-
-        // Função para carregar categorias do polo selecionado
-        function loadCategoriesForPolo(poloId) {
-            const categoriesContainer = document.getElementById('categoriesContainer');
-            
-            // Mostrar indicador de carregamento
-            categoriesContainer.innerHTML = '<div class="col-12 text-center"><p>Carregando cursos disponíveis...</p><div class="spinner-border text-primary" role="status"></div></div>';
-            
-            // Buscar categorias do polo
-            fetch('get_categories_by_polo.php?polo=' + poloId)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        if (data.categories.length === 0) {
-                            categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-warning">Nenhum curso disponível neste polo. Por favor, selecione outro polo ou entre em contato com o administrador.</div></div>';
-                            return;
-                        }
-                        
-                        // Limpar container
-                        categoriesContainer.innerHTML = '';
-                        
-                        // Adicionar cada categoria
-                        data.categories.forEach(category => {
-                            const categoryHtml = `
-                            <div class="col">
-                                <div class="course-card category-card" id="category${category.id}" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}')">
-                                    <div class="course-header">
-                                        <h5 class="m-0">${category.name}</h5>
-                                    </div>
-                                    <div class="course-body">
-                                        <p>${category.description || 'Formação completa com certificação reconhecida pelo MEC.'}</p>
-                                        <div class="course-price">R$ ${category.price || '297,00'}</div>
-                                        <ul class="mb-3">
-                                            <li>${category.duration || '6 meses'} de duração</li>
-                                            <li>Certificado incluído</li>
-                                            <li>Material didático digital</li>
-                                            <li>Suporte individualizado</li>
-                                        </ul>
-                                        <button type="button" class="btn btn-outline-primary w-100" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}')">Selecionar</button>
-                                    </div>
-                                </div>
+// Função modificada para selecionar categoria e armazenar preço
+function selectCategory(categoryId, categoryName, price, installments) {
+    // Remover seleção de todas as categorias
+    document.querySelectorAll('.category-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    // Adicionar seleção à categoria clicada
+    document.getElementById('category' + categoryId).classList.add('selected');
+    
+    // Armazenar informações da categoria
+    selectedCategoryId = categoryId;
+    selectedCategoryName = categoryName;
+    selectedCategoryPrice = price;
+    selectedCategoryInstallments = installments;
+    
+    // Atualizar campos ocultos
+    document.getElementById('selectedCategoryId').value = categoryId;
+    document.getElementById('selectedCategoryName').value = categoryName;
+    document.getElementById('selectedCategoryPrice').value = price;
+    document.getElementById('selectedCategoryInstallments').value = installments;
+    
+    // Habilitar botão de próximo
+    document.getElementById('step2Next').disabled = false;
+}
+      
+// Função para carregar categorias do polo selecionado com preços específicos
+function loadCategoriesForPolo(poloId) {
+    const categoriesContainer = document.getElementById('categoriesContainer');
+    
+    // Mostrar indicador de carregamento
+    categoriesContainer.innerHTML = '<div class="col-12 text-center"><p>Carregando cursos disponíveis...</p><div class="spinner-border text-primary" role="status"></div></div>';
+    
+    // Buscar categorias do polo
+    fetch('get_categories_by_polo.php?polo=' + poloId)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                if (data.categories.length === 0) {
+                    categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-warning">Nenhum curso disponível neste polo. Por favor, selecione outro polo ou entre em contato com o administrador.</div></div>';
+                    return;
+                }
+                
+                // Limpar container
+                categoriesContainer.innerHTML = '';
+                
+                // Adicionar cada categoria
+                data.categories.forEach(category => {
+                    // Formatar preço para exibição (R$ XXX,XX)
+                    const formattedPrice = 'R$ ' + category.price.toFixed(2).replace('.', ',');
+                    
+                    const categoryHtml = `
+                    <div class="col">
+                        <div class="course-card category-card" id="category${category.id}" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}', ${category.price}, '${category.installments.replace(/'/g, "\\'")}')">
+                            <div class="course-header">
+                                <h5 class="m-0">${category.name}</h5>
                             </div>
-                            `;
-                            
-                            categoriesContainer.innerHTML += categoryHtml;
-                        });
-                        
-                        // Resetar seleção de categoria
-                        selectedCategoryId = null;
-                        selectedCategoryName = null;
-                        document.getElementById('selectedCategoryId').value = '';
-                        document.getElementById('selectedCategoryName').value = '';
-                        document.getElementById('step2Next').disabled = true;
-                        
-                    } else {
-                        categoriesContainer.innerHTML = `<div class="col-12"><div class="alert alert-danger">Erro ao carregar cursos: ${data.message}</div></div>`;
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Erro ao comunicar com o servidor. Por favor, tente novamente mais tarde.</div></div>';
+                            <div class="course-body">
+                                <p>${category.description || 'Formação completa com certificação reconhecida pelo MEC.'}</p>
+                                <div class="course-price">${formattedPrice}</div>
+                                <div class="course-installments">${category.installments}</div>
+                                <ul class="mb-3">
+                                    <li>${category.duration} de duração</li>
+                                    <li>Certificado incluído</li>
+                                    <li>Material didático digital</li>
+                                    <li>Suporte individualizado</li>
+                                </ul>
+                                <button type="button" class="btn btn-outline-primary w-100" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}', ${category.price}, '${category.installments.replace(/'/g, "\\'")}')">Selecionar</button>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    
+                    categoriesContainer.innerHTML += categoryHtml;
                 });
-        }
-
+                
+                // Resetar seleção de categoria
+                selectedCategoryId = null;
+                selectedCategoryName = null;
+                selectedCategoryPrice = null;
+                selectedCategoryInstallments = null;
+                document.getElementById('selectedCategoryId').value = '';
+                document.getElementById('selectedCategoryName').value = '';
+                document.getElementById('selectedCategoryPrice').value = '';
+                document.getElementById('selectedCategoryInstallments').value = '';
+                document.getElementById('step2Next').disabled = true;
+                
+            } else {
+                categoriesContainer.innerHTML = `<div class="col-12"><div class="alert alert-danger">Erro ao carregar cursos: ${data.message}</div></div>`;
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Erro ao comunicar com o servidor. Por favor, tente novamente mais tarde.</div></div>';
+        });
+}
         // Função para navegar para próxima etapa
         function goToNextStep() {
             // Esconder etapa atual
@@ -870,17 +901,27 @@
         }
 
         // Função para preencher resumo
-        function populateSummary() {
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            
-            document.getElementById('summaryPoloName').textContent = selectedPoloName;
-            document.getElementById('summaryCourseName').textContent = selectedCategoryName;
-            document.getElementById('summaryName').textContent = firstName + ' ' + lastName;
-            document.getElementById('summaryEmail').textContent = document.getElementById('email').value;
-            document.getElementById('summaryPhone').textContent = document.getElementById('phone').value;
-            document.getElementById('summaryCPF').textContent = document.getElementById('cpf').value;
-        }
+function populateSummary() {
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    
+    document.getElementById('summaryPoloName').textContent = selectedPoloName;
+    document.getElementById('summaryCourseName').textContent = selectedCategoryName;
+    document.getElementById('summaryName').textContent = firstName + ' ' + lastName;
+    document.getElementById('summaryEmail').textContent = document.getElementById('email').value;
+    document.getElementById('summaryPhone').textContent = document.getElementById('phone').value;
+    document.getElementById('summaryCPF').textContent = document.getElementById('cpf').value;
+    
+    // Adicionar preço ao resumo, se disponível
+    if (selectedCategoryPrice) {
+        const formattedPrice = 'R$ ' + parseFloat(selectedCategoryPrice).toFixed(2).replace('.', ',');
+        document.getElementById('summaryPrice').textContent = formattedPrice;
+        document.getElementById('summaryInstallments').textContent = selectedCategoryInstallments;
+        document.getElementById('priceSummaryRow').style.display = 'flex';
+    } else {
+        document.getElementById('priceSummaryRow').style.display = 'none';
+    }
+}
 
         // Função para validar campos da etapa 3 (dados pessoais)
         function validateStep3() {

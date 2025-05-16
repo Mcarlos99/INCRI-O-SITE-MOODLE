@@ -56,11 +56,30 @@ try {
     $mainCategories = [];
     foreach ($categories as $category) {
         if ($category['parent'] == 0 && $category['visible'] == 1) {
+            // Obter informações de preço da categoria para este polo específico
+            $price_info = null;
+            
+            // Verificar se o polo tem configuração de preços e se existe configuração específica para esta categoria
+            if (isset($poloConfig['course_prices']) && isset($poloConfig['course_prices'][$category['id']])) {
+                $price_info = $poloConfig['course_prices'][$category['id']];
+            } 
+            // Senão, verificar se existe um valor padrão para o polo
+            else if (isset($poloConfig['course_prices']) && isset($poloConfig['course_prices']['default'])) {
+                $price_info = $poloConfig['course_prices']['default'];
+            }
+            // Se tudo falhar, usar o valor padrão global
+            else {
+                $price_info = $DEFAULT_COURSE_PRICES['default'];
+            }
+            
             $mainCategories[] = [
                 'id' => $category['id'],
                 'name' => $category['name'],
                 'description' => strip_tags($category['description'] ?? ''),
-                'coursecount' => $category['coursecount']
+                'coursecount' => $category['coursecount'],
+                'price' => $price_info['price'],
+                'duration' => $price_info['duration'],
+                'installments' => $price_info['installments']
             ];
         }
     }

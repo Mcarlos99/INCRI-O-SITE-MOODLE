@@ -6,3 +6,5 @@
 [2025-05-13 17:16:06] E-mail de aprovação enviado via SMTP: SUCESSO
 [2025-05-13 17:39:15] Tentando enviar e-mail de aprovação para: maurocarlos.ti@gmail.com | Nome: MAURO CARLOS | Login: maurocarlosti
 [2025-05-13 17:39:15] Resultado do envio para maurocarlos.ti@gmail.com: SUCESSO
+[2025-05-15 15:57:17] Tentando enviar e-mail de aprovação para: diego2008tuc@gmail.com | Nome: Carlos | Login: diego2008tuc
+[2025-05-15 15:57:17] Resultado do envio para diego2008tuc@gmail.com: SUCESSO

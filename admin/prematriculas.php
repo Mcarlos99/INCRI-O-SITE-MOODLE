@@ -505,7 +505,7 @@ function sendRejectionEmail($email, $name, $categoryName, $poloName, $reason) {
                     <p>{$reason}</p>
                 </div>
                 
-                <p>Se desejar obter mais informações ou discutir outras opções, por favor entre em contato pelo telefone (91) 3456-7890 ou responda a este email.</p>
+                <p>Se desejar obter mais informações ou discutir outras opções, por favor entre em contato pelo telefone (94) 98409-8666 ou responda a este email.</p>
                 
                 <p>
                 Atenciosamente,<br>

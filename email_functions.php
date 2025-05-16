@@ -64,7 +64,7 @@ function sendPreMatriculaEmail($email, $name, $categoryName, $poloName, $type = 
                     </ol>
                 </div>
                 
-                <p>Caso tenha alguma dúvida, sinta-se à vontade para entrar em contato pelo telefone (91) 3456-7890 ou responder a este email.</p>
+                <p>Caso tenha alguma dúvida, sinta-se à vontade para entrar em contato pelo telefone (94) 98409-8666 ou responder a este email.</p>
                 
                 <p>
                 Atenciosamente,<br>

@@ -45,7 +45,7 @@ function sendPreMatriculaEmail($email, $name, $categoryName, $poloName, $type = 
                     <p><strong>Curso:</strong> {$categoryName}</p>
                 </div>
                 
-                <p>Caso tenha alguma dúvida, sinta-se à vontade para entrar em contato pelo telefone (91) 3456-7890.</p>
+                <p>Caso tenha alguma dúvida, sinta-se à vontade para entrar em contato pelo telefone (94) 98409-8666.</p>
                 
                 <p>
                 Atenciosamente,<br>
@@ -218,7 +218,7 @@ function sendRejectionEmail($email, $name, $categoryName, $poloName, $reason) {
                     <p>{$reason}</p>
                 </div>
                 
-                <p>Se desejar obter mais informações ou discutir outras opções, por favor entre em contato pelo telefone (91) 3456-7890.</p>
+                <p>Se desejar obter mais informações ou discutir outras opções, por favor entre em contato pelo telefone (94) 98409-8666.</p>
                 
                 <p>
                 Atenciosamente,<br>

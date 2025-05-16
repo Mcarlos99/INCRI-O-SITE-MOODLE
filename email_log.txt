@@ -16,3 +16,9 @@
 [2025-05-13 17:39:18] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Igarapé-Miri
 [2025-05-15 15:02:56] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Segurança do trabalho - Polo Breu Branco
 [2025-05-15 15:02:59] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: TESTE 1 - Técnico em Segurança do trabalho
+[2025-05-15 15:43:59] [SUCCESS] [smtp] To: diego2008tuc@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem - Polo Breu Branco
+[2025-05-15 15:44:02] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Carlos Santos - Técnico em Enfermagem
+[2025-05-15 15:57:20] [SUCCESS] [smtp] To: diego2008tuc@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem - Polo Breu Branco
+[2025-05-15 15:57:20] [SUCCESS] [smtp] To: diego2008tuc@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem - Polo Breu Branco
+[2025-05-15 17:21:48] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Informação Sobre Pré-matrícula - Técnico em Segurança do trabalho - Polo Breu Branco
+[2025-05-15 17:21:48] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Informação Sobre Pré-matrícula - Técnico em Segurança do trabalho - Polo Breu Branco

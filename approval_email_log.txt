@@ -8,3 +8,63 @@
 [2025-05-13 17:39:15] Resultado do envio para maurocarlos.ti@gmail.com: SUCESSO
 [2025-05-15 15:57:17] Tentando enviar e-mail de aprovação para: diego2008tuc@gmail.com | Nome: Carlos | Login: diego2008tuc
 [2025-05-15 15:57:17] Resultado do envio para diego2008tuc@gmail.com: SUCESSO
+[2025-05-15 17:29:03] Tentando enviar e-mail de aprovação para: keilareis67890@gmail.com | Nome: queila  | Login: keilareis67890
+[2025-05-15 17:29:03] Resultado do envio para keilareis67890@gmail.com: SUCESSO
+[2025-05-15 18:46:21] Tentando enviar e-mail de aprovação para: lucienesouaz@gmail.com | Nome: RUCIENE  | Login: lucienesouaz
+[2025-05-15 18:46:21] Resultado do envio para lucienesouaz@gmail.com: SUCESSO
+[2025-05-15 18:49:22] Tentando enviar e-mail de aprovação para: silvadeoliveiramichely@gmail.com | Nome: MICHELY  | Login: silvadeoliveiramichely
+[2025-05-15 18:49:22] Resultado do envio para silvadeoliveiramichely@gmail.com: SUCESSO
+[2025-05-15 19:19:44] Tentando enviar e-mail de aprovação para: milenadasilvasantos434@gmail.com | Nome: MILENA  | Login: milenadasilvasantos434
+[2025-05-15 19:19:44] Resultado do envio para milenadasilvasantos434@gmail.com: SUCESSO
+[2025-05-15 19:50:07] Tentando enviar e-mail de aprovação para: ellyestumano123@gmail.com | Nome: ELLY  | Login: ellyestumano123
+[2025-05-15 19:50:07] Resultado do envio para ellyestumano123@gmail.com: SUCESSO
+[2025-05-15 19:50:10] Tentando enviar e-mail de aprovação para: tanianominato@gmail.com | Nome: TANIA  | Login: tanianominato
+[2025-05-15 19:50:10] Resultado do envio para tanianominato@gmail.com: SUCESSO
+[2025-05-15 20:21:29] Tentando enviar e-mail de aprovação para: ferreiragalvaoyasmim@gmail.com | Nome: YASMIN  | Login: ferreiragalvaoyasmim
+[2025-05-15 20:21:29] Resultado do envio para ferreiragalvaoyasmim@gmail.com: SUCESSO
+[2025-05-15 20:21:38] Tentando enviar e-mail de aprovação para: dudinhaferreira124810@gmail.com | Nome: MARIA EDUARDA  | Login: dudinhaferreira124810
+[2025-05-15 20:21:38] Resultado do envio para dudinhaferreira124810@gmail.com: SUCESSO
+[2025-05-15 20:21:48] Tentando enviar e-mail de aprovação para: beatrizsilvamacedo2022@gmail.com | Nome: BEATRIZ  | Login: beatrizsilvamacedo2022
+[2025-05-15 20:21:48] Resultado do envio para beatrizsilvamacedo2022@gmail.com: SUCESSO
+[2025-05-15 20:21:56] Tentando enviar e-mail de aprovação para: klebersantos1077@gmail.com | Nome: INAJARA  | Login: klebersantos1077
+[2025-05-15 20:21:56] Resultado do envio para klebersantos1077@gmail.com: SUCESSO
+[2025-05-15 20:22:06] Tentando enviar e-mail de aprovação para: rayllanascimento14@gmail.com | Nome: RAILA  | Login: rayllanascimento14
+[2025-05-15 20:22:06] Resultado do envio para rayllanascimento14@gmail.com: SUCESSO
+[2025-05-15 20:22:14] Tentando enviar e-mail de aprovação para: cristianebatistan@gmail.com | Nome: CRISTIANE  | Login: cristianebatistan
+[2025-05-15 20:22:14] Resultado do envio para cristianebatistan@gmail.com: SUCESSO
+[2025-05-15 20:22:22] Tentando enviar e-mail de aprovação para: adriellyborges34@gmail.com | Nome: ADRIELLY  | Login: adriellyborges34
+[2025-05-15 20:22:22] Resultado do envio para adriellyborges34@gmail.com: SUCESSO
+[2025-05-15 20:22:29] Tentando enviar e-mail de aprovação para: vermota1068@gmail.com | Nome: VANESSA | Login: vermota1068
+[2025-05-15 20:22:29] Resultado do envio para vermota1068@gmail.com: SUCESSO
+[2025-05-15 20:34:51] Tentando enviar e-mail de aprovação para: cynthiacarolinnecunhaa@gmail.com | Nome: CYNTHIA CAROLINE CUNHA SANTOS | Login: cynthiacarolinnecunhaa
+[2025-05-15 20:34:51] Resultado do envio para cynthiacarolinnecunhaa@gmail.com: SUCESSO
+[2025-05-15 20:34:59] Tentando enviar e-mail de aprovação para: vp390282@gmail.com | Nome: VITORIA  | Login: vp390282
+[2025-05-15 20:34:59] Resultado do envio para vp390282@gmail.com: SUCESSO
+[2025-05-15 20:39:13] Tentando enviar e-mail de aprovação para: katianegomescruz7@gmail.com | Nome: KATIANA | Login: katianegomescruz7
+[2025-05-15 20:39:13] Resultado do envio para katianegomescruz7@gmail.com: SUCESSO
+[2025-05-16 20:07:50] Tentando enviar e-mail de aprovação para: dielymaranhao1@gmail.com | Nome: Diely  | Login: dielymaranhao1
+[2025-05-16 20:07:50] Resultado do envio para dielymaranhao1@gmail.com: SUCESSO
+[2025-05-16 20:08:00] Tentando enviar e-mail de aprovação para: vp390272@gmail.com | Nome: Vitória Sousa | Login: vp390272
+[2025-05-16 20:08:00] Resultado do envio para vp390272@gmail.com: SUCESSO
+[2025-05-16 20:08:08] Tentando enviar e-mail de aprovação para: jhenyvaladares83@gmail.com | Nome: Jhennfyr | Login: jhenyvaladares83
+[2025-05-16 20:08:08] Resultado do envio para jhenyvaladares83@gmail.com: SUCESSO
+[2025-05-16 20:08:15] Tentando enviar e-mail de aprovação para: alvesvana07@gmail.com | Nome: Geovana  | Login: alvesvana07
+[2025-05-16 20:08:15] Resultado do envio para alvesvana07@gmail.com: SUCESSO
+[2025-05-16 20:52:51] Tentando enviar e-mail de aprovação para: kauany.vitoria789@icloud.com | Nome: Kauany vitória  | Login: kauanyvitoria789
+[2025-05-16 20:52:51] Resultado do envio para kauany.vitoria789@icloud.com: SUCESSO
+[2025-05-16 20:52:58] Tentando enviar e-mail de aprovação para: bebecaalmeida951@gmail.com | Nome: Rebeca  | Login: bebecaalmeida951
+[2025-05-16 20:52:58] Resultado do envio para bebecaalmeida951@gmail.com: SUCESSO
+[2025-05-16 20:53:07] Tentando enviar e-mail de aprovação para: bispocarmocassiane@gmail.com | Nome: Cassiane  | Login: bispocarmocassiane
+[2025-05-16 20:53:14] Tentando enviar e-mail de aprovação para: yandracarine224@gmail.com | Nome: Yandra  | Login: yandracarine224
+[2025-05-16 20:53:07] Resultado do envio para bispocarmocassiane@gmail.com: SUCESSO
+[2025-05-16 20:53:14] Resultado do envio para yandracarine224@gmail.com: SUCESSO
+[2025-05-16 20:53:22] Tentando enviar e-mail de aprovação para: wcostalimaw@gmail.com | Nome: Wectory  | Login: wcostalimaw
+[2025-05-16 20:53:22] Resultado do envio para wcostalimaw@gmail.com: SUCESSO
+[2025-05-16 20:53:28] Tentando enviar e-mail de aprovação para: yandracarine244@gmail.com | Nome: Yandra  | Login: yandracarine244
+[2025-05-16 20:53:28] Resultado do envio para yandracarine244@gmail.com: SUCESSO
+[2025-05-16 20:53:35] Tentando enviar e-mail de aprovação para: Vmota1068@gmail.com | Nome: Vanessa do Carmo | Login: vmota1068
+[2025-05-16 20:53:35] Resultado do envio para Vmota1068@gmail.com: SUCESSO
+[2025-05-16 20:53:45] Tentando enviar e-mail de aprovação para: duddamartins0223@gmail.com | Nome: Maria Eduarda | Login: duddamartins0223
+[2025-05-16 20:53:45] Resultado do envio para duddamartins0223@gmail.com: SUCESSO
+[2025-05-16 21:07:22] Tentando enviar e-mail de aprovação para: nathaliaferreira30005@gmail.com | Nome: Natália  | Login: nathaliaferreira30005
+[2025-05-16 21:07:22] Resultado do envio para nathaliaferreira30005@gmail.com: SUCESSO

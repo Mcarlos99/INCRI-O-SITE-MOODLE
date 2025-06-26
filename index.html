@@ -236,6 +236,355 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+
+
+        /* Estilos para navegação hierárquica */
+.category-navigation {
+    border-left: 4px solid #6c757d;
+}
+
+.category-navigation:hover {
+    border-left-color: var(--primary-color);
+}
+
+.category-navigation .course-header {
+    background-color: #6c757d;
+}
+
+.category-navigation:hover .course-header {
+    background-color: var(--primary-color);
+}
+
+/* Breadcrumb personalizado */
+.breadcrumb {
+    background-color: #e9ecef;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: #6c757d;
+    font-weight: bold;
+}
+
+.breadcrumb-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+/* Ícones diferenciados */
+.course-card .fa-folder {
+    color: #ffc107;
+}
+
+.course-card .fa-graduation-cap {
+    color: #28a745;
+}
+
+/* Animação suave para transições */
+.course-card {
+    transition: all 0.3s ease;
+}
+
+.course-card.category-navigation {
+    cursor: pointer;
+}
+
+/* Indicador visual para categorias vs cursos */
+.category-navigation .course-body::before {
+    content: "📁";
+    font-size: 2rem;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.course-card:not(.category-navigation) .course-body::before {
+    content: "🎓";
+    font-size: 2rem;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Responsividade melhorada */
+@media (max-width: 768px) {
+    .breadcrumb {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+    
+    .course-card .course-body::before {
+        font-size: 1.5rem;
+    }
+}
+
+
+/* Estilos base existentes mantidos */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+}
+
+/* Estilos para navegação hierárquica */
+.category-navigation {
+    border-left: 4px solid #6c757d;
+    transition: all 0.3s ease;
+}
+
+.category-navigation:hover {
+    border-left-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.category-navigation .course-header {
+    background-color: #6c757d;
+}
+
+.category-navigation:hover .course-header {
+    background-color: var(--primary-color);
+}
+
+/* Estilos para cursos finais */
+.course-final {
+    border-left: 4px solid #28a745;
+}
+
+.course-final:hover {
+    border-left-color: #20c997;
+    transform: translateY(-3px);
+}
+
+.course-final .course-header {
+    background-color: #28a745;
+}
+
+.course-final:hover .course-header {
+    background-color: #20c997;
+}
+
+/* Breadcrumb personalizado */
+.breadcrumb {
+    background-color: #e9ecef;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    color: #6c757d;
+    font-weight: bold;
+    margin: 0 8px;
+}
+
+.breadcrumb-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+    color: #2980b9;
+}
+
+/* Ícones diferenciados */
+.course-card .fa-folder {
+    color: #ffc107;
+    animation: folderPulse 2s infinite;
+}
+
+.course-card .fa-graduation-cap {
+    color: #28a745;
+    animation: capPulse 2s infinite;
+}
+
+@keyframes folderPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes capPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* Indicadores visuais usando data attributes */
+.course-body[data-indicator]::before {
+    content: attr(data-indicator);
+    font-size: 2rem;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Animação suave para transições */
+.course-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.course-card.category-navigation {
+    cursor: pointer;
+    position: relative;
+}
+
+.course-card.category-navigation::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid rgba(255,255,255,0.8);
+    transform: rotate(-90deg);
+    transition: transform 0.3s ease;
+}
+
+.course-card.category-navigation:hover::after {
+    transform: rotate(-90deg) scale(1.2);
+}
+
+/* Modo adaptativo - ocultar elementos desnecessários no modo simples */
+.simple-mode .breadcrumb {
+    display: none;
+}
+
+.simple-mode .category-navigation::after {
+    display: none;
+}
+
+/* Estilos para alertas informativos */
+.alert-info {
+    border-left: 4px solid #17a2b8;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+/* Melhorias visuais para cards */
+.course-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.course-card:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.course-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.course-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.course-card:hover .course-header::before {
+    left: 100%;
+}
+
+/* Responsividade melhorada */
+@media (max-width: 768px) {
+    .breadcrumb {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+    
+    .course-card .course-body[data-indicator]::before {
+        font-size: 1.5rem;
+    }
+    
+    .course-card.category-navigation::after {
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid rgba(255,255,255,0.8);
+    }
+}
+
+@media (max-width: 576px) {
+    .course-card {
+        margin-bottom: 1rem;
+    }
+    
+    .breadcrumb-item {
+        font-size: 0.8rem;
+    }
+}
+
+/* Estados de loading melhorados */
+.loading-categories {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner-border {
+    animation: spin 1s linear infinite;
+}
+
+/* Estilos para seleção */
+.course-card.selected {
+    border: 3px solid var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* Hover effects melhorados */
+.btn-outline-primary:hover,
+.btn-outline-secondary:hover {
+    transform: translateY(-1px);
+    transition: all 0.2s ease;
+}
+
+/* Indicadores de tipo de navegação */
+.hierarchical-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 193, 7, 0.9);
+    color: #333;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.simple-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(40, 167, 69, 0.9);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+
     </style>
 </head>
 <body>
@@ -704,98 +1053,170 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-    <script>
-        // Variáveis globais
 
-	let currentStep = 1;
-	let selectedPoloId = null;
-	let selectedPoloName = null;
-	let selectedCategoryId = null;
-	let selectedCategoryName = null;
-	let selectedCategoryPrice = null;  // Nova variável para armazenar o preço
-	let selectedCategoryInstallments = null;  // Nova variável para armazenar o parcelamento
+<script>
+    // Variáveis globais
+// Variáveis globais
+let currentStep = 1;
+let selectedPoloId = null;
+let selectedPoloName = null;
+let selectedCategoryId = null;
+let selectedCategoryName = null;
+let selectedCategoryPrice = null;
+let selectedCategoryInstallments = null;
+let currentParentId = 0; // Para navegação hierárquica
+let navigationMode = 'simple'; // 'simple' ou 'hierarchical'
 
-        // Função para selecionar polo
-        function selectPolo(poloId, poloName) {
-            // Remover seleção de todos os polos
-            document.querySelectorAll('.polo-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            
-            // Adicionar seleção ao polo clicado
-            document.getElementById('polo-' + poloId).classList.add('selected');
-            
-            // Armazenar informações do polo
-            selectedPoloId = poloId;
-            selectedPoloName = poloName;
-            
-            // Atualizar campos ocultos
-            document.getElementById('selectedPoloId').value = poloId;
-            document.getElementById('selectedPoloName').value = poloName;
-            
-            // Habilitar botão de próximo
-            document.getElementById('step1Next').disabled = false;
-        }
-
-// Função modificada para selecionar categoria e armazenar preço
-function selectCategory(categoryId, categoryName, price, installments) {
-    // Remover seleção de todas as categorias
-    document.querySelectorAll('.category-card').forEach(card => {
+// Função para selecionar polo
+function selectPolo(poloId, poloName) {
+    // Remover seleção de todos os polos
+    document.querySelectorAll('.polo-card').forEach(card => {
         card.classList.remove('selected');
     });
     
-    // Adicionar seleção à categoria clicada
-    document.getElementById('category' + categoryId).classList.add('selected');
+    // Adicionar seleção ao polo clicado
+    document.getElementById('polo-' + poloId).classList.add('selected');
     
-    // Armazenar informações da categoria
-    selectedCategoryId = categoryId;
-    selectedCategoryName = categoryName;
-    selectedCategoryPrice = price;
-    selectedCategoryInstallments = installments;
+    // Armazenar informações do polo
+    selectedPoloId = poloId;
+    selectedPoloName = poloName;
     
     // Atualizar campos ocultos
-    document.getElementById('selectedCategoryId').value = categoryId;
-    document.getElementById('selectedCategoryName').value = categoryName;
-    document.getElementById('selectedCategoryPrice').value = price;
-    document.getElementById('selectedCategoryInstallments').value = installments;
+    document.getElementById('selectedPoloId').value = poloId;
+    document.getElementById('selectedPoloName').value = poloName;
     
     // Habilitar botão de próximo
-    document.getElementById('step2Next').disabled = false;
+    document.getElementById('step1Next').disabled = false;
 }
-      
-// Função para carregar categorias do polo selecionado com preços específicos
-function loadCategoriesForPolo(poloId) {
+
+// Função para selecionar categoria/curso
+function selectCategory(categoryId, categoryName, price, installments, isCourse = false) {
+    if (isCourse || navigationMode === 'simple') {
+        // É um curso final OU estamos no modo simples - selecionar
+        // Remover seleção de todas as categorias
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        
+        // Adicionar seleção à categoria clicada
+        document.getElementById('category' + categoryId).classList.add('selected');
+        
+        // Armazenar informações da categoria
+        selectedCategoryId = categoryId;
+        selectedCategoryName = categoryName;
+        selectedCategoryPrice = price;
+        selectedCategoryInstallments = installments;
+        
+        // Atualizar campos ocultos
+        document.getElementById('selectedCategoryId').value = categoryId;
+        document.getElementById('selectedCategoryName').value = categoryName;
+        document.getElementById('selectedCategoryPrice').value = price;
+        document.getElementById('selectedCategoryInstallments').value = installments;
+        
+        // Habilitar botão de próximo
+        document.getElementById('step2Next').disabled = false;
+    } else {
+        // É uma categoria pai no modo hierárquico - navegar para subcategorias
+        currentParentId = categoryId;
+        loadCategoriesForPolo(selectedPoloId, categoryId);
+    }
+}
+
+// Função para navegar de volta na hierarquia
+function navigateBack(parentId = 0) {
+    currentParentId = parentId;
+    loadCategoriesForPolo(selectedPoloId, parentId);
+    
+    // Desabilitar botão próximo se voltarmos para categorias
+    document.getElementById('step2Next').disabled = true;
+    
+    // Limpar seleção atual
+    selectedCategoryId = null;
+    selectedCategoryName = null;
+    selectedCategoryPrice = null;
+    selectedCategoryInstallments = null;
+    document.getElementById('selectedCategoryId').value = '';
+    document.getElementById('selectedCategoryName').value = '';
+    document.getElementById('selectedCategoryPrice').value = '';
+    document.getElementById('selectedCategoryInstallments').value = '';
+}
+
+// Função inteligente para carregar categorias
+function loadCategoriesForPolo(poloId, parentId = 0) {
     const categoriesContainer = document.getElementById('categoriesContainer');
     
     // Mostrar indicador de carregamento
-    categoriesContainer.innerHTML = '<div class="col-12 text-center"><p>Carregando cursos disponíveis...</p><div class="spinner-border text-primary" role="status"></div></div>';
+    categoriesContainer.innerHTML = '<div class="col-12 text-center"><p>Carregando...</p><div class="spinner-border text-primary" role="status"></div></div>';
     
-    // Buscar categorias do polo
-    fetch('get_categories_by_polo.php?polo=' + poloId)
+    // Buscar categorias do polo usando o endpoint inteligente
+    fetch(`get_categories_smart.php?polo=${poloId}&parent=${parentId}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                // Detectar o modo de navegação
+                navigationMode = data.navigation_mode;
+                
                 if (data.categories.length === 0) {
-                    categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-warning">Nenhum curso disponível neste polo. Por favor, selecione outro polo ou entre em contato com o administrador.</div></div>';
+                    categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-warning">Nenhum curso disponível. Entre em contato com o administrador.</div></div>';
                     return;
                 }
                 
                 // Limpar container
                 categoriesContainer.innerHTML = '';
                 
+/*                 // Adicionar breadcrumb apenas se for modo hierárquico e não for raiz
+                if (navigationMode === 'hierarchical' && !data.is_root) {
+                    let breadcrumbHtml = '<div class="col-12 mb-3"><nav aria-label="breadcrumb"><ol class="breadcrumb">';
+                    breadcrumbHtml += '<li class="breadcrumb-item"><a href="#" onclick="navigateBack(0)">Início</a></li>';
+                    
+                    data.breadcrumb.forEach(item => {
+                        breadcrumbHtml += `<li class="breadcrumb-item"><a href="#" onclick="navigateBack(${item.parent})">${item.name}</a></li>`;
+                    });
+                    
+                    breadcrumbHtml += '</ol></nav></div>';
+                    categoriesContainer.innerHTML = breadcrumbHtml;
+                } */
+                
+                /*// Adicionar informação do modo de navegação (apenas para debug/info)
+                if (navigationMode === 'hierarchical' && data.is_root) {
+                    categoriesContainer.innerHTML += '<div class="col-12 mb-3"><div class="alert alert-info"><small><i class="fas fa-info-circle me-2"></i>Este polo usa navegação hierárquica. Clique em uma categoria para ver os cursos disponíveis.</small></div></div>';
+                } */
+                
                 // Adicionar cada categoria
                 data.categories.forEach(category => {
-                    // Formatar preço para exibição (R$ XXX,XX)
                     const formattedPrice = 'R$ ' + category.price.toFixed(2).replace('.', ',');
+                    
+                    const isCourse = category.is_course;
+                    const hasSubcategories = category.has_subcategories;
+                    
+                    let actionButton = '';
+                    let cardClass = 'course-card category-card';
+                    let categoryIcon = '';
+                    let categoryIndicator = '';
+                    
+                    if (navigationMode === 'simple' || isCourse) {
+                        // Modo simples OU é um curso final - botão de seleção
+                        actionButton = `<button type="button" class="btn btn-outline-primary w-100" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}', ${category.price}, '${category.installments.replace(/'/g, "\\'")}', true)">Selecionar Curso</button>`;
+                        categoryIcon = '<i class="fas fa-graduation-cap ms-2"></i>';
+                        categoryIndicator = '🎓';
+                        cardClass += ' course-final';
+                    } else {
+                        // Modo hierárquico E é uma categoria - botão de navegação
+                        actionButton = `<button type="button" class="btn btn-outline-secondary w-100" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}', ${category.price}, '${category.installments.replace(/'/g, "\\'")}', false)">Ver Cursos <i class="fas fa-arrow-right ms-2"></i></button>`;
+                        categoryIcon = '<i class="fas fa-folder ms-2"></i>';
+                        categoryIndicator = '📁';
+                        cardClass += ' category-navigation';
+                    }
                     
                     const categoryHtml = `
                     <div class="col">
-                        <div class="course-card category-card" id="category${category.id}" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}', ${category.price}, '${category.installments.replace(/'/g, "\\'")}')">
+                        <div class="${cardClass}" id="category${category.id}">
                             <div class="course-header">
-                                <h5 class="m-0">${category.name}</h5>
+                                <h5 class="m-0">${category.name} ${categoryIcon}</h5>
                             </div>
-                            <div class="course-body">
-                                <p>${category.description || 'Formação completa com certificação reconhecida pelo MEC.'}</p>
+                            <div class="course-body" data-indicator="${categoryIndicator}">
+                                <p>${category.description || (isCourse || navigationMode === 'simple' ? 'Formação completa com certificação reconhecida.' : 'Categoria com vários cursos disponíveis.')}</p>
+                                ${(navigationMode === 'simple' || isCourse) ? `
                                 <div class="course-price">${formattedPrice}</div>
                                 <div class="course-installments">${category.installments}</div>
                                 <ul class="mb-3">
@@ -804,7 +1225,13 @@ function loadCategoriesForPolo(poloId) {
                                     <li>Material didático digital</li>
                                     <li>Suporte individualizado</li>
                                 </ul>
-                                <button type="button" class="btn btn-outline-primary w-100" onclick="selectCategory(${category.id}, '${category.name.replace(/'/g, "\\'")}', ${category.price}, '${category.installments.replace(/'/g, "\\'")}')">Selecionar</button>
+                                ` : `
+                                <div class="text-muted mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    ${category.coursecount > 0 ? `${category.coursecount} curso(s) disponível(is)` : 'Vários cursos disponíveis'}
+                                </div>
+                                `}
+                                ${actionButton}
                             </div>
                         </div>
                     </div>
@@ -813,94 +1240,86 @@ function loadCategoriesForPolo(poloId) {
                     categoriesContainer.innerHTML += categoryHtml;
                 });
                 
-                // Resetar seleção de categoria
-                selectedCategoryId = null;
-                selectedCategoryName = null;
-                selectedCategoryPrice = null;
-                selectedCategoryInstallments = null;
-                document.getElementById('selectedCategoryId').value = '';
-                document.getElementById('selectedCategoryName').value = '';
-                document.getElementById('selectedCategoryPrice').value = '';
-                document.getElementById('selectedCategoryInstallments').value = '';
-                document.getElementById('step2Next').disabled = true;
-                
             } else {
-                categoriesContainer.innerHTML = `<div class="col-12"><div class="alert alert-danger">Erro ao carregar cursos: ${data.message}</div></div>`;
+                categoriesContainer.innerHTML = `<div class="col-12"><div class="alert alert-danger">Erro ao carregar: ${data.message}</div></div>`;
             }
         })
         .catch(error => {
             console.error('Erro:', error);
-            categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Erro ao comunicar com o servidor. Por favor, tente novamente mais tarde.</div></div>';
+            categoriesContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Erro ao comunicar com o servidor.</div></div>';
         });
 }
-        // Função para navegar para próxima etapa
-        function goToNextStep() {
-            // Esconder etapa atual
-            document.getElementById('formStep' + currentStep).classList.remove('active');
-            
-            // Atualizar etapa atual
-            currentStep++;
-            
-            // Mostrar próxima etapa
-            document.getElementById('formStep' + currentStep).classList.add('active');
-            
-            // Ações específicas para cada etapa
-            if (currentStep === 2) {
-                // Se avançou para etapa de seleção de categoria, carregar categorias do polo
-                document.getElementById('selectedPoloDisplay').textContent = selectedPoloName;
-                loadCategoriesForPolo(selectedPoloId);
-            } else if (currentStep === 4) {
-                // Se avançou para etapa de confirmação, preencher resumo
-                populateSummary();
-            }
-            
-            // Atualizar indicador de etapas
-            updateStepIndicator();
-            
-            // Rolar para o topo
-            window.scrollTo({
-                top: document.getElementById('stepIndicator').offsetTop - 100,
-                behavior: 'smooth'
-            });
-        }
 
-        // Função para navegar para etapa anterior
-        function goToPrevStep() {
-            // Esconder etapa atual
-            document.getElementById('formStep' + currentStep).classList.remove('active');
-            
-            // Atualizar etapa atual
-            currentStep--;
-            
-            // Mostrar etapa anterior
-            document.getElementById('formStep' + currentStep).classList.add('active');
-            
-            // Atualizar indicador de etapas
-            updateStepIndicator();
-            
-            // Rolar para o topo
-            window.scrollTo({
-                top: document.getElementById('stepIndicator').offsetTop - 100,
-                behavior: 'smooth'
-            });
-        }
+// Função para navegar para próxima etapa
+function goToNextStep() {
+    // Esconder etapa atual
+    document.getElementById('formStep' + currentStep).classList.remove('active');
+    
+    // Atualizar etapa atual
+    currentStep++;
+    
+    // Mostrar próxima etapa
+    document.getElementById('formStep' + currentStep).classList.add('active');
+    
+    // Ações específicas para cada etapa
+    if (currentStep === 2) {
+        // Se avançou para etapa de seleção de categoria, carregar categorias do polo
+        document.getElementById('selectedPoloDisplay').textContent = selectedPoloName;
+        currentParentId = 0; // Resetar para categoria raiz
+        navigationMode = 'simple'; // Resetar modo
+        loadCategoriesForPolo(selectedPoloId, 0);
+    } else if (currentStep === 4) {
+        // Se avançou para etapa de confirmação, preencher resumo
+        populateSummary();
+    }
+    
+    // Atualizar indicador de etapas
+    updateStepIndicator();
+    
+    // Rolar para o topo
+    window.scrollTo({
+        top: document.getElementById('stepIndicator').offsetTop - 100,
+        behavior: 'smooth'
+    });
+}
 
-        // Função para atualizar indicador de etapas
-        function updateStepIndicator() {
-            // Resetar todas as etapas
-            document.querySelectorAll('.step').forEach((step, index) => {
-                const stepNum = index + 1;
-                step.classList.remove('active', 'completed');
-                
-                if (stepNum < currentStep) {
-                    step.classList.add('completed');
-                } else if (stepNum === currentStep) {
-                    step.classList.add('active');
-                }
-            });
-        }
+// Função para navegar para etapa anterior
+function goToPrevStep() {
+    // Esconder etapa atual
+    document.getElementById('formStep' + currentStep).classList.remove('active');
+    
+    // Atualizar etapa atual
+    currentStep--;
+    
+    // Mostrar etapa anterior
+    document.getElementById('formStep' + currentStep).classList.add('active');
+    
+    // Atualizar indicador de etapas
+    updateStepIndicator();
+    
+    // Rolar para o topo
+    window.scrollTo({
+        top: document.getElementById('stepIndicator').offsetTop - 100,
+        behavior: 'smooth'
+    });
+}
 
-        // Função para preencher resumo
+// Função para atualizar indicador de etapas
+function updateStepIndicator() {
+    // Resetar todas as etapas
+    document.querySelectorAll('.step').forEach((step, index) => {
+        const stepNum = index + 1;
+        step.classList.remove('active', 'completed');
+        
+        if (stepNum < currentStep) {
+            step.classList.add('completed');
+        } else if (stepNum === currentStep) {
+            step.classList.add('active');
+        }
+    });
+}
+
+// Função para preencher resumo
 function populateSummary() {
     const firstName = document.getElementById('firstName').value;
     const lastName = document.getElementById('lastName').value;
@@ -918,121 +1337,123 @@ function populateSummary() {
         document.getElementById('summaryPrice').textContent = formattedPrice;
         document.getElementById('summaryInstallments').textContent = selectedCategoryInstallments;
         document.getElementById('priceSummaryRow').style.display = 'flex';
+        document.getElementById('installmentsSummaryRow').style.display = 'flex';
     } else {
         document.getElementById('priceSummaryRow').style.display = 'none';
+        document.getElementById('installmentsSummaryRow').style.display = 'none';
     }
 }
 
-        // Função para validar campos da etapa 3 (dados pessoais)
-        function validateStep3() {
-            const requiredFields = [
-                'firstName',
-                'lastName',
-                'email',
-                'phone',
-                'cpf'
-            ];
-            
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                const inputElement = document.getElementById(field);
-                if (!inputElement.value.trim()) {
-                    inputElement.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    inputElement.classList.remove('is-invalid');
-                }
-            });
-            
-            // Verificar checkbox de termos
-            const termsCheck = document.getElementById('termsCheck');
-            if (!termsCheck.checked) {
-                termsCheck.classList.add('is-invalid');
-                isValid = false;
-            } else {
-                termsCheck.classList.remove('is-invalid');
-            }
-            
-            // Validar formato de email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const emailElement = document.getElementById('email');
-            if (emailElement.value && !emailRegex.test(emailElement.value)) {
-                emailElement.classList.add('is-invalid');
-                isValid = false;
-            }
-            
-            return isValid;
+// Função para validar campos da etapa 3 (dados pessoais)
+function validateStep3() {
+    const requiredFields = [
+        'firstName',
+        'lastName',
+        'email',
+        'phone',
+        'cpf'
+    ];
+    
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        const inputElement = document.getElementById(field);
+        if (!inputElement.value.trim()) {
+            inputElement.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            inputElement.classList.remove('is-invalid');
         }
+    });
+    
+    // Verificar checkbox de termos
+    const termsCheck = document.getElementById('termsCheck');
+    if (!termsCheck.checked) {
+        termsCheck.classList.add('is-invalid');
+        isValid = false;
+    } else {
+        termsCheck.classList.remove('is-invalid');
+    }
+    
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailElement = document.getElementById('email');
+    if (emailElement.value && !emailRegex.test(emailElement.value)) {
+        emailElement.classList.add('is-invalid');
+        isValid = false;
+    }
+    
+    return isValid;
+}
 
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Aplicar máscaras nos campos
-            if (typeof $ !== 'undefined' && $.fn.mask) {
-                $('#cpf').mask('000.000.000-00');
-                $('#phone').mask('(00) 00000-0000');
-                $('#zipCode').mask('00000-000');
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Aplicar máscaras nos campos
+    if (typeof $ !== 'undefined' && $.fn.mask) {
+        $('#cpf').mask('000.000.000-00');
+        $('#phone').mask('(00) 00000-0000');
+        $('#zipCode').mask('00000-000');
+    }
+    
+    // Botões de navegação
+    document.getElementById('step1Next').addEventListener('click', goToNextStep);
+    
+    document.getElementById('step2Prev').addEventListener('click', goToPrevStep);
+    document.getElementById('step2Next').addEventListener('click', goToNextStep);
+    
+    document.getElementById('step3Prev').addEventListener('click', goToPrevStep);
+    document.getElementById('step3Next').addEventListener('click', function() {
+        if (validateStep3()) {
+            goToNextStep();
+        } else {
+            // Mostrar mensagem de validação
+            alert('Por favor, preencha todos os campos obrigatórios corretamente.');
+        }
+    });
+    
+    document.getElementById('step4Prev').addEventListener('click', goToPrevStep);
+    
+    // Form submission
+    document.getElementById('prematriculaForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Mostrar overlay de carregamento
+        document.getElementById('loadingOverlay').style.display = 'flex';
+        
+        // Coletar dados do formulário
+        const formData = new FormData(this);
+        
+        // Enviar dados para o servidor
+        fetch('process_prematricula.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Esconder overlay de carregamento
+            document.getElementById('loadingOverlay').style.display = 'none';
+            
+            if (data.success) {
+                // Mostrar modal de sucesso
+                document.getElementById('modalPoloName').textContent = selectedPoloName;
+                document.getElementById('modalEmail').textContent = document.getElementById('email').value;
+                
+                new bootstrap.Modal(document.getElementById('successModal')).show();
+            } else {
+                // Mostrar mensagem de erro
+                alert('Erro ao processar pré-matrícula: ' + data.message);
             }
+        })
+        .catch(error => {
+            // Esconder overlay de carregamento
+            document.getElementById('loadingOverlay').style.display = 'none';
             
-            // Botões de navegação
-            document.getElementById('step1Next').addEventListener('click', goToNextStep);
-            
-            document.getElementById('step2Prev').addEventListener('click', goToPrevStep);
-            document.getElementById('step2Next').addEventListener('click', goToNextStep);
-            
-            document.getElementById('step3Prev').addEventListener('click', goToPrevStep);
-            document.getElementById('step3Next').addEventListener('click', function() {
-                if (validateStep3()) {
-                    goToNextStep();
-                } else {
-                    // Mostrar mensagem de validação
-                    alert('Por favor, preencha todos os campos obrigatórios corretamente.');
-                }
-            });
-            
-            document.getElementById('step4Prev').addEventListener('click', goToPrevStep);
-            
-            // Form submission
-            document.getElementById('prematriculaForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Mostrar overlay de carregamento
-                document.getElementById('loadingOverlay').style.display = 'flex';
-                
-                // Coletar dados do formulário
-                const formData = new FormData(this);
-                
-                // Enviar dados para o servidor
-                fetch('process_prematricula.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Esconder overlay de carregamento
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                    
-                    if (data.success) {
-                        // Mostrar modal de sucesso
-                        document.getElementById('modalPoloName').textContent = selectedPoloName;
-                        document.getElementById('modalEmail').textContent = document.getElementById('email').value;
-                        
-                        new bootstrap.Modal(document.getElementById('successModal')).show();
-                    } else {
-                        // Mostrar mensagem de erro
-                        alert('Erro ao processar pré-matrícula: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    // Esconder overlay de carregamento
-                    document.getElementById('loadingOverlay').style.display = 'none';
-                    
-                    // Mostrar mensagem de erro
-                    console.error('Erro:', error);
-                    alert('Ocorreu um erro ao processar sua pré-matrícula. Por favor, tente novamente.');
-                });
-            });
+            // Mostrar mensagem de erro
+            console.error('Erro:', error);
+            alert('Ocorreu um erro ao processar sua pré-matrícula. Por favor, tente novamente.');
         });
+    });
+});
     </script>
 </body>
 </html>

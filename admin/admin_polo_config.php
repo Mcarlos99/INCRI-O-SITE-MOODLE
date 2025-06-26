@@ -2,10 +2,14 @@
 // admin_polo_config.php
 // Página de administração para gerenciar configurações de polos e preços dos cursos
 
-// Verificar autenticação de administrador aqui...
+// Verificar autenticação de administrador
+$admin_key = $_GET['key'] ?? '';
+if ($admin_key !== 'admin123') {
+    die('Acesso não autorizado');
+}
 
 // Carregar configuração atual
-$configFile = 'polo_config.php';
+$configFile = '../polo_config.php';
 $configExists = file_exists($configFile);
 
 // Carregar categorias de cursos globais (para uso de fallback)
@@ -49,6 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_config'])) {
                 'api_token' => $poloData['api_token'],
                 'description' => $poloData['description'] ?? '',
                 'address' => $poloData['address'] ?? '',
+                // IMPORTANTE: Preservar configuração de navegação hierárquica
+                'hierarchical_navigation' => isset($_POST['hierarchical_navigation'][$poloId]) ? 
+                    ($_POST['hierarchical_navigation'][$poloId] === '1' ? true : false) : 
+                    (isset($POLO_CONFIG[$poloId]['hierarchical_navigation']) ? $POLO_CONFIG[$poloId]['hierarchical_navigation'] : false),
                 'course_prices' => []
             ];
             
@@ -90,6 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_config'])) {
                 'api_token' => $_POST['new_polo_api_token'],
                 'description' => $_POST['new_polo_description'] ?? '',
                 'address' => $_POST['new_polo_address'] ?? '',
+                'hierarchical_navigation' => isset($_POST['new_polo_hierarchical']) ? 
+                    ($_POST['new_polo_hierarchical'] === '1' ? true : false) : false,
                 'course_prices' => []
             ];
             
@@ -120,6 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_config'])) {
     if (file_put_contents($configFile, $configContent)) {
         $successMessage = 'Configuração salva com sucesso!';
         $configExists = true;
+        // Recarregar configuração
+        include($configFile);
     } else {
         $errorMessage = 'Erro ao salvar configuração. Verifique as permissões de escrita.';
     }
@@ -158,6 +170,21 @@ if ($configExists) {
             padding-left: 15px;
             margin-top: 20px;
         }
+        .navigation-config {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .hierarchical-badge {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .simple-badge {
+            background-color: #28a745;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -174,7 +201,7 @@ if ($configExists) {
         
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
-                Gerenciar Polos, Instâncias Moodle e Preços dos Cursos
+                Gerenciar Polos, Instâncias Moodle, Preços dos Cursos e Navegação
             </div>
             <div class="card-body">
                 <form method="post">
@@ -182,14 +209,55 @@ if ($configExists) {
                         <h5 class="mb-3">Polos Existentes</h5>
                         
                         <?php foreach ($POLO_CONFIG as $poloId => $polo): ?>
+                            <?php $isHierarchical = isset($polo['hierarchical_navigation']) ? $polo['hierarchical_navigation'] : false; ?>
                             <div class="card mb-4">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h6 class="m-0"><?php echo $polo['name']; ?> (<?php echo $poloId; ?>)</h6>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="removePolo('<?php echo $poloId; ?>')">
-                                        <i class="fas fa-trash"></i> Remover
-                                    </button>
+                                    <div>
+                                        <span class="badge <?php echo $isHierarchical ? 'hierarchical-badge' : 'simple-badge'; ?> me-2">
+                                            <?php echo $isHierarchical ? 'Navegação Hierárquica' : 'Navegação Simples'; ?>
+                                        </span>
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="removePolo('<?php echo $poloId; ?>')">
+                                            <i class="fas fa-trash"></i> Remover
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="card-body">
+                                    <!-- Configuração de Navegação -->
+                                    <div class="navigation-config">
+                                        <h6><i class="fas fa-sitemap me-2"></i>Tipo de Navegação</h6>
+                                        <p class="small text-muted mb-3">Escolha como os alunos navegarão pelas categorias de cursos neste polo.</p>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" 
+                                                           name="hierarchical_navigation[<?php echo $poloId; ?>]" 
+                                                           id="simple_<?php echo $poloId; ?>" 
+                                                           value="0" 
+                                                           <?php echo !$isHierarchical ? 'checked' : ''; ?>>
+                                                    <label class="form-check-label" for="simple_<?php echo $poloId; ?>">
+                                                        <strong>Navegação Simples</strong><br>
+                                                        <small>Categorias principais = Cursos diretos</small>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" 
+                                                           name="hierarchical_navigation[<?php echo $poloId; ?>]" 
+                                                           id="hierarchical_<?php echo $poloId; ?>" 
+                                                           value="1" 
+                                                           <?php echo $isHierarchical ? 'checked' : ''; ?>>
+                                                    <label class="form-check-label" for="hierarchical_<?php echo $poloId; ?>">
+                                                        <strong>Navegação Hierárquica</strong><br>
+                                                        <small>Categoria → Subcategoria/Curso</small>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label class="form-label">Nome do Polo:</label>
@@ -227,6 +295,9 @@ if ($configExists) {
                                         <button type="button" class="btn btn-outline-primary btn-sm" onclick="testConnection('<?php echo $poloId; ?>', '<?php echo $polo['moodle_url']; ?>', '<?php echo $polo['api_token']; ?>')">
                                             <i class="fas fa-plug"></i> Testar Conexão
                                         </button>
+                                        <a href="../debug_categories.php?polo=<?php echo $poloId; ?>" class="btn btn-outline-info btn-sm" target="_blank">
+                                            <i class="fas fa-search"></i> Ver IDs das Categorias
+                                        </a>
                                         <span id="connection-status-<?php echo $poloId; ?>"></span>
                                     </div>
                                     
@@ -302,7 +373,7 @@ if ($configExists) {
                                                         $api_categories = array();
                                                         
                                                         foreach ($categoriesData as $category) {
-                                                            if ($category['parent'] == 0 && $category['visible'] == 1) {
+                                                            if ($category['visible'] == 1) {
                                                                 $api_categories[$category['id']] = $category['name'];
                                                             }
                                                         }
@@ -339,13 +410,13 @@ if ($configExists) {
                                         
                                         if (!empty($polo_categories)):
                                         ?>
-                                            <h6 class="mt-4">Preços específicos por curso</h6>
-                                            <p class="text-muted">Deixe o preço em branco para usar o valor padrão do polo</p>
+                                            <h6 class="mt-4">Preços específicos por curso/categoria</h6>
+                                            <p class="text-muted">Deixe o preço em branco para usar o valor padrão do polo. Use o botão "Ver IDs das Categorias" para descobrir os IDs corretos.</p>
                                             
                                             <?php foreach ($polo_categories as $categoryId => $categoryName): ?>
                                                 <div class="card mb-3">
                                                     <div class="card-header bg-light">
-                                                        <strong><?php echo htmlspecialchars($categoryName); ?></strong>
+                                                        <strong><?php echo htmlspecialchars($categoryName); ?> (ID: <?php echo $categoryId; ?>)</strong>
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row">
@@ -373,7 +444,7 @@ if ($configExists) {
                                             <?php endforeach; ?>
                                         <?php else: ?>
                                             <div class="alert alert-warning mt-3">
-                                                <i class="fas fa-info-circle me-2"></i> Não foi possível obter a lista de cursos para este polo.
+                                                <i class="fas fa-info-circle me-2"></i> Não foi possível obter a lista de cursos para este polo. Use o botão "Ver IDs das Categorias" para descobrir os IDs.
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -387,6 +458,35 @@ if ($configExists) {
                     <h5 class="mb-3">Adicionar Novo Polo</h5>
                     <div class="card">
                         <div class="card-body">
+                            <!-- Configuração de navegação para novo polo -->
+                            <div class="navigation-config">
+                                <h6><i class="fas fa-sitemap me-2"></i>Tipo de Navegação</h6>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" 
+                                                   name="new_polo_hierarchical" 
+                                                   id="new_simple" 
+                                                   value="0" checked>
+                                            <label class="form-check-label" for="new_simple">
+                                                <strong>Navegação Simples</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" 
+                                                   name="new_polo_hierarchical" 
+                                                   id="new_hierarchical" 
+                                                   value="1">
+                                            <label class="form-check-label" for="new_hierarchical">
+                                                <strong>Navegação Hierárquica</strong>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Nome do Polo:</label>
@@ -448,6 +548,12 @@ if ($configExists) {
                         <button type="submit" name="save_config" class="btn btn-primary">
                             <i class="fas fa-save"></i> Salvar Configurações
                         </button>
+                        <a href="configure_navigation.php?key=<?php echo htmlspecialchars($admin_key); ?>" class="btn btn-outline-info">
+                            <i class="fas fa-sitemap"></i> Configurar Navegação Avançada
+                        </a>
+                        <a href="prematriculas.php?key=<?php echo htmlspecialchars($admin_key); ?>" class="btn btn-outline-secondary">
+                            <i class="fas fa-users"></i> Ver Pré-matrículas
+                        </a>
                     </div>
                 </form>
             </div>
@@ -475,7 +581,7 @@ if ($configExists) {
             formData.append('moodle_url', moodleUrl);
             formData.append('api_token', apiToken);
             
-            fetch('test_moodle_connection.php', {
+            fetch('../test_moodle_connection.php', {
                 method: 'POST',
                 body: formData
             })
@@ -536,6 +642,20 @@ if ($configExists) {
                             
                             calcInstallments(priceInput, installmentsInput, numMonths);
                         }
+                    }
+                });
+            });
+            
+            // Atualizar badges quando a navegação mudar
+            document.querySelectorAll('input[name^="hierarchical_navigation"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const badge = this.closest('.card').querySelector('.badge');
+                    if (this.value === '1') {
+                        badge.textContent = 'Navegação Hierárquica';
+                        badge.className = 'badge hierarchical-badge me-2';
+                    } else {
+                        badge.textContent = 'Navegação Simples';
+                        badge.className = 'badge simple-badge me-2';
                     }
                 });
             });

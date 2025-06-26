@@ -8,6 +8,7 @@ $POLO_CONFIG = array (
     'api_token' => 'xxx',
     'description' => 'Polo de Educação Superior de Tucuruí',
     'address' => 'Av. Principal, 1234 - Centro, Tucuruí - PA',
+    'hierarchical_navigation' => false, // Navegação simples - só categorias
     'course_prices' => 
     array (
       1 => 
@@ -31,37 +32,37 @@ $POLO_CONFIG = array (
     'api_token' => '0441051a5b5bc8968f3e65ff7d45c3de',
     'description' => 'Polo de Educação Superior de Breu Branco',
     'address' => 'Rua Parauapebas, 145 - Novo Horizonte, Breu Branco - PA',
-    'course_prices' => 
-    array (
-      1 => 
-      array (
-        'price' => 4599.0,
-        'duration' => '24 meses',
-        'installments' => '24x de R$ 259,00',
+    'hierarchical_navigation' => true, // Navegação hierárquica - categorias > subcategorias
+    'course_prices' => array(
+      26 => array( // Técnico em Enfermagem 
+          'price' => 2500.00,
+          'duration' => '18 meses',
+          'installments' => '18x de R$ 138,89',
       ),
-      16 => 
-      array (
-        'price' => 4599.0,
-        'duration' => '24 meses',
-        'installments' => '24x de R$ 259,00',
+      27 => array( // Técnico em Eletromecânica 
+          'price' => 2500.00,
+          'duration' => '18 meses',
+          'installments' => '18x de R$ 138,89',
       ),
-      21 => 
-      array (
-        'price' => 4599.0,
-        'duration' => '24 meses',
-        'installments' => '24x de R$ 259,00',
+      28 => array( // Técnico em Eletrotécnica 
+          'price' => 2500.00,
+          'duration' => '18 meses',
+          'installments' => '18x de R$ 138,89',
       ),
-      6 => 
-      array (
-        'price' => 2799.0,
-        'duration' => '18 meses',
-        'installments' => '18x de R$ 180,00',
+      29 => array( // Técnico em Segurança do Trabalho
+          'price' => 2500.00,
+          'duration' => '18 meses',
+          'installments' => '18x de R$ 138,89',
       ),
-      'default' => 
-      array (
-        'price' => 287.0,
-        'duration' => '8 meses',
-        'installments' => '6x de R$ 77,77',
+      33 => array( // NR'S 
+          'price' => 2500.00,
+          'duration' => '18 meses',
+          'installments' => '18x de R$ 138,89',
+      ),
+      'default' => array(
+          'price' => 1500.00,
+          'duration' => '12 meses',
+          'installments' => '12x de R$ 125,00',
       ),
     ),
   ),
@@ -72,6 +73,7 @@ $POLO_CONFIG = array (
     'api_token' => '051a62d5f60167246607b195a9630d3b',
     'description' => 'Polo de Educação Superior de Igarapé-Miri',
     'address' => 'Tv. Principal, 890 - Centro, Igarapé-Miri - PA',
+    'hierarchical_navigation' => false, // Navegação simples - só categorias
     'course_prices' => 
     array (
       1 => 
@@ -95,6 +97,7 @@ $POLO_CONFIG = array (
     'api_token' => 'xxx',
     'description' => 'Polo de Educação Superior de Moju',
     'address' => 'Av. das Palmeiras, 123 - Centro, Moju - PA',
+    'hierarchical_navigation' => false, // Navegação simples - só categorias
     'course_prices' => 
     array (
       1 => 

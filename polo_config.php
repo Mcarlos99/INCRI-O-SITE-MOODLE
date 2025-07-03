@@ -90,14 +90,14 @@ $POLO_CONFIG = array (
       ),
     ),
   ),
-  'moju' => 
+  'ava' => 
   array (
-    'name' => 'Moju',
-    'moodle_url' => 'https://moju.imepedu.com.br',
-    'api_token' => 'xxx',
-    'description' => 'Polo de Educação Superior de Moju',
-    'address' => 'Av. das Palmeiras, 123 - Centro, Moju - PA',
-    'hierarchical_navigation' => false, // Navegação simples - só categorias
+    'name' => 'AVA - Ambiente Virtual de Aprendizagem',
+    'moodle_url' => 'https://ava.imepedu.com.br',
+    'api_token' => '9eeee9d48903c760bc224b61e0547e4e',
+    'description' => 'AVA - Ambiente Virtual de Aprendizagem',
+    'address' => 'BRASIL',
+    'hierarchical_navigation' => true, // Navegação simples - só categorias
     'course_prices' => 
     array (
       1 => 

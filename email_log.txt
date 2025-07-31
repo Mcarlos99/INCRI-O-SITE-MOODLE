@@ -172,3 +172,153 @@
 [2025-05-18 12:10:08] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Andrielly da cruz Borges  Dos santos  - Técnico em Enfermagem 08
 [2025-05-18 13:45:12] [SUCCESS] [smtp] To: vs8819868@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 10 - Polo Breu Branco
 [2025-05-18 13:45:15] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Valéria da Silva dos Santos  Silva  - Técnico em Enfermagem 10
+[2025-05-19 12:19:51] [SUCCESS] [smtp] To: vs8819868@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:19:51] [SUCCESS] [smtp] To: vs8819868@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:19:57] [SUCCESS] [smtp] To: andriellyborges14@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:19:57] [SUCCESS] [smtp] To: andriellyborges14@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:20:10] [SUCCESS] [smtp] To: sulianeferreira39@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:20:10] [SUCCESS] [smtp] To: sulianeferreira39@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:20:20] [SUCCESS] [smtp] To: fatimagalsao2004@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:20:20] [SUCCESS] [smtp] To: fatimagalsao2004@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:20:30] [SUCCESS] [smtp] To: leiditrindade195@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 09 - Polo Breu Branco
+[2025-05-19 12:20:30] [SUCCESS] [smtp] To: leiditrindade195@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 09 - Polo Breu Branco
+[2025-05-19 12:20:40] [SUCCESS] [smtp] To: jonataluana1@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:20:40] [SUCCESS] [smtp] To: jonataluana1@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:20:48] [SUCCESS] [smtp] To: silvajaquelina540@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:20:48] [SUCCESS] [smtp] To: silvajaquelina540@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:20:55] [SUCCESS] [smtp] To: todinwar@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:20:55] [SUCCESS] [smtp] To: todinwar@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:21:03] [SUCCESS] [smtp] To: gesiannealves896@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:21:03] [SUCCESS] [smtp] To: gesiannealves896@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:21:09] [SUCCESS] [smtp] To: arianacipriano010@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:21:09] [SUCCESS] [smtp] To: arianacipriano010@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:21:16] [SUCCESS] [smtp] To: arlet.maranguape@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:21:16] [SUCCESS] [smtp] To: arlet.maranguape@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:21:23] [SUCCESS] [smtp] To: Sileiadacostarodriguesdesousa@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:21:23] [SUCCESS] [smtp] To: Sileiadacostarodriguesdesousa@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 12:21:27] [SUCCESS] [smtp] To: francineidebrandao024@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 12:21:27] [SUCCESS] [smtp] To: francineidebrandao024@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 16:12:30] [SUCCESS] [smtp] To: rutesilvavieira26@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 16:12:33] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Rute  Silva Vieira de Oliveira  - Técnico em Enfermagem 10
+[2025-05-19 16:36:31] [SUCCESS] [smtp] To: rutesilvavieira26@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 16:36:31] [SUCCESS] [smtp] To: rutesilvavieira26@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-05-19 18:05:40] [SUCCESS] [smtp] To: paulaappolinario17@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-19 18:05:43] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: ANA PAULA APPOLINARIO - Técnico em Enfermagem 08
+[2025-05-19 19:53:15] [SUCCESS] [smtp] To: matosemilly485@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 09 - Polo Breu Branco
+[2025-05-19 19:53:18] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Emilly Lopes Matos  - Técnico em Enfermagem 09
+[2025-05-20 12:34:09] [SUCCESS] [smtp] To: matosemilly485@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 09 - Polo Breu Branco
+[2025-05-20 12:34:09] [SUCCESS] [smtp] To: matosemilly485@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 09 - Polo Breu Branco
+[2025-05-20 12:34:12] [SUCCESS] [smtp] To: paulaappolinario17@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-20 12:34:12] [SUCCESS] [smtp] To: paulaappolinario17@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-20 22:26:10] [SUCCESS] [smtp] To: staissa700@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-20 22:26:13] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Taissa  Silva Souza  - Técnico em Enfermagem 08
+[2025-05-20 22:28:39] [SUCCESS] [smtp] To: julianamedeiros380@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-20 22:28:43] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Juliana  Medeiros Gonçalves  - Técnico em Enfermagem 08
+[2025-05-20 22:37:16] [SUCCESS] [smtp] To: marialuzianedesousa9@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-20 22:37:19] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Maria luziane de Sousa  Sousa - Técnico em Enfermagem 08
+[2025-05-21 15:06:55] [SUCCESS] [smtp] To: gabriellysandes2526@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 15:06:58] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Gabrielly  Silva Lima  - Técnico em Enfermagem 08
+[2025-05-21 19:09:53] [SUCCESS] [smtp] To: gabriellysandes2526@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 19:09:53] [SUCCESS] [smtp] To: gabriellysandes2526@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 19:10:03] [SUCCESS] [smtp] To: marialuzianedesousa9@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 19:10:03] [SUCCESS] [smtp] To: marialuzianedesousa9@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 19:10:14] [SUCCESS] [smtp] To: julianamedeiros380@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 19:10:14] [SUCCESS] [smtp] To: julianamedeiros380@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 19:10:26] [SUCCESS] [smtp] To: staissa700@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 19:10:26] [SUCCESS] [smtp] To: staissa700@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-05-21 19:48:49] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Igarapé-Miri
+[2025-05-21 19:48:52] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Técnico em Enfermagem 
+[2025-06-10 19:23:52] [SUCCESS] [smtp] To: raquelpereira0804@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 10 - Polo Breu Branco
+[2025-06-10 19:23:55] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Raquel   pereira morais - Técnico em Enfermagem 10
+[2025-06-13 22:02:26] [SUCCESS] [smtp] To: erlaianecantaodesouza@gamil.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem 08 - Polo Breu Branco
+[2025-06-13 22:02:29] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Erlaiane  Cantão de Souza  - Técnico em Enfermagem 08
+[2025-06-19 18:22:06] [SUCCESS] [smtp] To: diretor@magalhaes-edu.com.br | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-19 18:22:10] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Carlos Santos - Técnico em Enfermagem 
+[2025-06-19 18:22:27] [SUCCESS] [smtp] To: diretor@magalhaes-edu.com.br | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-19 18:22:27] [SUCCESS] [smtp] To: diretor@magalhaes-edu.com.br | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-21 22:05:01] [SUCCESS] [smtp] To: joelmacostaleandro@hotmail.com | Subject: Confirmação de Pré-matrícula - CURSOS TÉCNICOS  - Polo Breu Branco
+[2025-06-21 22:05:05] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Joelma  Costa Leandro - CURSOS TÉCNICOS 
+[2025-06-24 13:37:33] [SUCCESS] [smtp] To: paulaccgcorrea@gmail.com | Subject: Confirmação de Pré-matrícula - CURSOS TÉCNICOS  - Polo Breu Branco
+[2025-06-24 13:37:37] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Paula  Corrêa - CURSOS TÉCNICOS 
+[2025-06-24 13:44:33] [SUCCESS] [smtp] To: paulaccgcorrea@gmail.com | Subject: Matrícula Aprovada - CURSOS TÉCNICOS  - Polo Breu Branco
+[2025-06-24 13:44:33] [SUCCESS] [smtp] To: paulaccgcorrea@gmail.com | Subject: Matrícula Aprovada - CURSOS TÉCNICOS  - Polo Breu Branco
+[2025-06-24 13:44:39] [SUCCESS] [smtp] To: joelmacostaleandro@hotmail.com | Subject: Matrícula Aprovada - CURSOS TÉCNICOS  - Polo Breu Branco
+[2025-06-24 13:44:39] [SUCCESS] [smtp] To: joelmacostaleandro@hotmail.com | Subject: Matrícula Aprovada - CURSOS TÉCNICOS  - Polo Breu Branco
+[2025-06-26 02:19:03] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Segurança do Trabalho - Polo Breu Branco
+[2025-06-26 02:19:07] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Técnico em Segurança do Trabalho
+[2025-06-26 03:12:03] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Informação Sobre Pré-matrícula - Técnico em Segurança do Trabalho - Polo Breu Branco
+[2025-06-26 03:12:03] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Informação Sobre Pré-matrícula - Técnico em Segurança do Trabalho - Polo Breu Branco
+[2025-06-26 23:05:10] [SUCCESS] [smtp] To: joiceolivdias123@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-26 23:05:14] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Joice  Oliveira Dias  - Técnico em Enfermagem 
+[2025-06-27 00:58:00] [SUCCESS] [smtp] To: erlaianecantaodesouza@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-27 00:58:04] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Erlaiane  Cantão de Souza  - Técnico em Enfermagem 
+[2025-06-27 17:56:08] [SUCCESS] [smtp] To: francineidebrandao024@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-27 17:56:11] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Francineide Brandão cunha  Brandão  - Técnico em Enfermagem 
+[2025-06-27 18:25:36] [SUCCESS] [smtp] To: marialuzianedesousa9@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-27 18:25:39] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Maria luziane de Sousa  Sousa - Técnico em Enfermagem 
+[2025-06-27 20:12:15] [SUCCESS] [smtp] To: polianaleite9100@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-27 20:12:18] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Poliane  Cardoso Leite  - Técnico em Enfermagem 
+[2025-06-30 20:49:48] [SUCCESS] [smtp] To: jdacostanascimento5@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-30 20:49:51] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Jose Antonio  Da Costa Nascimento  - Técnico em Enfermagem 
+[2025-06-30 22:17:37] [SUCCESS] [smtp] To: danielanascimentorosa107@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-06-30 22:17:40] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Daniela Nascimento rosa - Técnico em Enfermagem 
+[2025-07-01 16:29:45] [SUCCESS] [smtp] To: joiceolivdias123@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 16:29:45] [SUCCESS] [smtp] To: joiceolivdias123@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 16:30:02] [SUCCESS] [smtp] To: polianaleite9100@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 16:30:02] [SUCCESS] [smtp] To: polianaleite9100@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 16:30:08] [SUCCESS] [smtp] To: jdacostanascimento5@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 16:30:08] [SUCCESS] [smtp] To: jdacostanascimento5@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 16:30:14] [SUCCESS] [smtp] To: danielanascimentorosa107@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 16:30:14] [SUCCESS] [smtp] To: danielanascimentorosa107@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 22:24:01] [SUCCESS] [smtp] To: josseniramiranda909@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 22:24:04] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Jossenira    Miranda Rodrigues - Técnico em Enfermagem 
+[2025-07-01 22:30:51] [SUCCESS] [smtp] To: maiaroseane90@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 22:30:55] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Roseane  Maia  - Técnico em Enfermagem 
+[2025-07-01 22:32:18] [SUCCESS] [smtp] To: leticiaabreu0905@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-01 22:32:21] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Letícia de Abreu pinto  Abreu  - Técnico em Enfermagem 
+[2025-07-03 13:07:07] [SUCCESS] [smtp] To: leticiaabreu0905@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-03 13:07:07] [SUCCESS] [smtp] To: leticiaabreu0905@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-03 13:07:14] [SUCCESS] [smtp] To: maiaroseane90@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-03 13:07:14] [SUCCESS] [smtp] To: maiaroseane90@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-03 13:07:22] [SUCCESS] [smtp] To: josseniramiranda909@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-03 13:07:22] [SUCCESS] [smtp] To: josseniramiranda909@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-03 23:36:51] [SUCCESS] [smtp] To: danielanascimentorosa197@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-03 23:36:54] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Daniela Nascimento rosa - Técnico em Enfermagem 
+[2025-07-08 13:32:29] [SUCCESS] [smtp] To: danielanascimentorosa197@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-08 13:32:29] [SUCCESS] [smtp] To: danielanascimentorosa197@gmail.com | Subject: Matrícula Aprovada - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-12 14:48:33] [SUCCESS] [smtp] To: Vmota1068@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Enfermagem  - Polo Breu Branco
+[2025-07-12 14:48:37] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Vanessa do Carmo Mota - Técnico em Enfermagem 
+[2025-07-15 12:34:31] [SUCCESS] [smtp] To: paulomiranda3378@gmail.com | Subject: Confirmação de Pré-matrícula - Técnico em Segurança do Trabalho - Polo Breu Branco
+[2025-07-15 12:34:35] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: JOÃO PAULO MIRANDA DA COSTA - Técnico em Segurança do Trabalho
+[2025-07-15 21:31:21] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - EJA - Polo BioQuality
+[2025-07-15 21:31:25] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: testes1 teste1 - EJA
+[2025-07-15 21:32:19] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - EJA - Polo BioQuality
+[2025-07-15 21:32:19] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - EJA - Polo BioQuality
+[2025-07-16 17:23:46] [SUCCESS] [smtp] To: paulomiranda3378@gmail.com | Subject: Matrícula Aprovada - Técnico em Segurança do Trabalho - Polo Breu Branco
+[2025-07-16 17:23:46] [SUCCESS] [smtp] To: paulomiranda3378@gmail.com | Subject: Matrícula Aprovada - Técnico em Segurança do Trabalho - Polo Breu Branco
+[2025-07-18 17:22:47] [SUCCESS] [smtp] To: rodriguescarvalho107@gmail.com | Subject: Confirmação de Pré-matrícula - Módulo I | Técnico em eletrotécnica  - Polo Breu Branco
+[2025-07-18 17:22:50] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: ARTUR GUILHERME CARVALHO MONTEIRO - Módulo I | Técnico em eletrotécnica 
+[2025-07-22 14:44:26] [SUCCESS] [smtp] To: rodriguescarvalho107@gmail.com | Subject: Matrícula Aprovada - Módulo I | Técnico em eletrotécnica  - Polo Breu Branco
+[2025-07-22 14:44:26] [SUCCESS] [smtp] To: rodriguescarvalho107@gmail.com | Subject: Matrícula Aprovada - Módulo I | Técnico em eletrotécnica  - Polo Breu Branco
+[2025-07-23 12:30:48] [SUCCESS] [smtp] To: marialuzianedesousa9@gmail.com | Subject: Confirmação de Pré-matrícula - Módulo III | Técnico em enfermagem  - Polo Breu Branco
+[2025-07-23 12:30:52] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MARIA LUZIANE DE SOUSA SOUSA - Módulo III | Técnico em enfermagem 
+[2025-07-23 23:27:27] [SUCCESS] [smtp] To: reggisantos11@gmail.com | Subject: Confirmação de Pré-matrícula - Módulo IV | Técnico em enfermagem  - Polo Breu Branco
+[2025-07-23 23:27:31] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Reginaldo  Araújo - Módulo IV | Técnico em enfermagem 
+[2025-07-24 11:31:39] [SUCCESS] [smtp] To: reggisantos11@gmail.com | Subject: Matrícula Aprovada - Módulo IV | Técnico em enfermagem  - Polo Breu Branco
+[2025-07-24 11:31:39] [SUCCESS] [smtp] To: reggisantos11@gmail.com | Subject: Matrícula Aprovada - Módulo IV | Técnico em enfermagem  - Polo Breu Branco
+[2025-07-24 14:22:03] [SUCCESS] [smtp] To: hodsondaniel2007@gmail.com | Subject: Confirmação de Pré-matrícula - Módulo IV | Técnico em enfermagem  - Polo Breu Branco
+[2025-07-24 14:22:07] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Hudson  Daniel - Módulo IV | Técnico em enfermagem 
+[2025-07-24 14:43:29] [SUCCESS] [smtp] To: hodsondaniel2007@gmail.com | Subject: Matrícula Aprovada - Módulo IV | Técnico em enfermagem  - Polo Breu Branco
+[2025-07-24 14:43:29] [SUCCESS] [smtp] To: hodsondaniel2007@gmail.com | Subject: Matrícula Aprovada - Módulo IV | Técnico em enfermagem  - Polo Breu Branco
+[2025-07-24 20:53:49] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Módulo I | Técnico em eletrotécnica  - Polo Novo Repartimento
+[2025-07-24 20:53:53] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Módulo I | Técnico em eletrotécnica 
+[2025-07-24 20:54:41] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Módulo I | Técnico em eletrotécnica  - Polo Novo Repartimento
+[2025-07-24 20:54:41] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Matrícula Aprovada - Módulo I | Técnico em eletrotécnica  - Polo Novo Repartimento
+[2025-07-30 18:36:14] [SUCCESS] [smtp] To: welidacontabil@gmail.com | Subject: Confirmação de Pré-matrícula - Eja- Módulo I - Polo Novo Repartimento
+[2025-07-30 18:36:18] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Welida  Ariadne Santos Silva - Eja- Módulo I
+[2025-07-31 17:03:59] [SUCCESS] [smtp] To: joana-stefany@hotmail.com | Subject: Confirmação de Pré-matrícula - Módulo I | Técnico em eletrotécnica  - Polo AVA
+[2025-07-31 17:04:02] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: Joana  Farias Caldas - Módulo I | Técnico em eletrotécnica 
+[2025-07-31 17:12:05] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Módulo I | Técnico em eletrotécnica  - Polo AVA
+[2025-07-31 17:12:08] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Módulo I | Técnico em eletrotécnica 
+[2025-07-31 17:22:28] [SUCCESS] [smtp] To: maurocarlos.ti@gmail.com | Subject: Confirmação de Pré-matrícula - Módulo I | Técnico em enfermagem  - Polo AVA
+[2025-07-31 17:22:32] [SUCCESS] [smtp] To: magalhaeseducacao.aedu@gmail.com | Subject: Nova Pré-matrícula: MAURO CARLOS DE SA - Módulo I | Técnico em enfermagem 

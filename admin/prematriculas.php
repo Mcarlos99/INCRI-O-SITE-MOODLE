@@ -1,6 +1,6 @@
 <?php
-// Verificar se o usuário está logado como administrador (implementar autenticação adequada)
-// Para este exemplo, usaremos uma senha simples em URL
+// admin/prematriculas.php - Versão corrigida com diagnóstico de erro de base de dados
+// Verificar autenticação de administrador
 $admin_key = $_GET['key'] ?? '';
 if ($admin_key !== 'admin123') {
     die('Acesso não autorizado');
@@ -14,7 +14,6 @@ $db_pass = 'EHl20R5ahRvwF7yOP0Uv';
 
 // Incluir arquivo de configuração dos polos
 require_once('../polo_config.php');
-// Removido para corrigir erro 500: require_once('../// Removido para corrigir erro 500: // Removido para corrigir erro 500: email_approval_functions.php');
 
 // Processar ações
 $message = '';
@@ -53,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ]);
                     
                     // Criar usuário no Moodle e matricular nos cursos
-                    $createUser = createMoodleUserAndEnroll($prematricula, $POLO_CONFIG);
+                    $createUser = createMoodleUserAndEnrollImproved($prematricula, $POLO_CONFIG);
                     
                     if ($createUser['success']) {
                         $message = "Pré-matrícula #$id aprovada com sucesso! O aluno foi matriculado no Moodle.";
@@ -108,14 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     );
                 }
             }
-} catch (PDOException $e) {
+        } catch (PDOException $e) {
             $message = 'Erro ao processar ação: ' . $e->getMessage();
         }
     }
 }
 
-// Função para criar usuário no Moodle e matricular nos cursos
-function createMoodleUserAndEnroll($prematricula, $POLO_CONFIG) {
+/**
+ * Função melhorada para criar usuário no Moodle e matricular nos cursos
+ * VERSÃO CORRIGIDA - Resolve problemas de "Erro ao escrever na base de dados"
+ */
+function createMoodleUserAndEnrollImproved($prematricula, $POLO_CONFIG) {
     try {
         // Verificar se o polo existe na configuração
         if (!isset($POLO_CONFIG[$prematricula['polo_id']])) {
@@ -127,21 +129,49 @@ function createMoodleUserAndEnroll($prematricula, $POLO_CONFIG) {
         $MOODLE_URL = $poloConfig['moodle_url'];
         $API_TOKEN = $poloConfig['api_token'];
         
+        // CORREÇÃO: Testar capacidades do polo antes de tentar criar usuário
+        $poloTest = testPoloCapabilities($MOODLE_URL, $API_TOKEN);
+        if (!$poloTest['success']) {
+            return [
+                'success' => false, 
+                'message' => 'Polo não está acessível: ' . $poloTest['error']
+            ];
+        }
+        
         // Criar nome de usuário a partir do email (parte antes do @)
         $usernameBase = strtolower(explode('@', $prematricula['email'])[0]);
         // Remover caracteres especiais e substituir espaços
         $username = preg_replace('/[^a-z0-9]/', '', $usernameBase);
         
+        // Garantir que o username tenha pelo menos 3 caracteres
+        if (strlen($username) < 3) {
+            $username = $username . rand(100, 999);
+        }
+        
         // Gerar senha aleatória
         $password = generatePassword(12);
         
+        // CORREÇÃO: Usar parâmetros específicos do polo
+        $userParams = getPoloSpecificUserParams(
+            $prematricula['polo_id'],
+            $username, 
+            $password, 
+            $prematricula['first_name'], 
+            $prematricula['last_name'], 
+            $prematricula['email']
+        );
+        
         // Criar usuário no Moodle
-        $userId = createMoodleUser($username, $password, $prematricula['first_name'], $prematricula['last_name'], $prematricula['email'], [
-            'phone' => $prematricula['phone'],
-            'cpf' => $prematricula['cpf'],
-            'polo' => $prematricula['polo_name'],
-            'category' => $prematricula['category_name']
-        ], $MOODLE_URL, $API_TOKEN);
+        $userId = createMoodleUserImproved(
+            $userParams['username'],
+            $userParams['password'],
+            $userParams['firstname'],
+            $userParams['lastname'],
+            $userParams['email'],
+            array_diff_key($userParams, array_flip(['username', 'password', 'firstname', 'lastname', 'email'])),
+            $MOODLE_URL, 
+            $API_TOKEN
+        );
         
         if (!$userId) {
             return ['success' => false, 'message' => 'Erro ao criar usuário no Moodle'];
@@ -175,9 +205,248 @@ function createMoodleUserAndEnroll($prematricula, $POLO_CONFIG) {
             'courses_count' => count($enrolledCourses),
             'user_id' => $userId
         ];
+        
     } catch (Exception $e) {
         return ['success' => false, 'message' => $e->getMessage()];
     }
+}
+
+/**
+ * Função para testar conectividade e permissões do polo
+ */
+function testPoloCapabilities($moodleUrl, $apiToken) {
+    $logFile = __DIR__ . '/../polo_capabilities_test.log';
+    $timestamp = date('Y-m-d H:i:s');
+    
+    // Teste 1: Verificar se o webservice está ativo
+    $url = $moodleUrl . '/webservice/rest/server.php';
+    $params = [
+        'wstoken' => $apiToken,
+        'wsfunction' => 'core_webservice_get_site_info',
+        'moodlewsrestformat' => 'json'
+    ];
+    
+    try {
+        $response = callMoodleAPI($url, $params);
+        $logMessage = "[{$timestamp}] POLO: {$moodleUrl}\n";
+        $logMessage .= "Site Info OK - Moodle Version: " . ($response['version'] ?? 'unknown') . "\n";
+        
+        // Teste 2: Verificar capacidades do usuário
+        $params = [
+            'wstoken' => $apiToken,
+            'wsfunction' => 'core_course_get_categories',
+            'moodlewsrestformat' => 'json'
+        ];
+        
+        $categoriesResponse = callMoodleAPI($url, $params);
+        $logMessage .= "Categorias acessíveis: " . count($categoriesResponse) . "\n";
+        $logMessage .= "==============================\n";
+        
+        file_put_contents($logFile, $logMessage, FILE_APPEND);
+        
+        return [
+            'success' => true,
+            'site_info' => $response,
+            'categories_count' => count($categoriesResponse)
+        ];
+        
+    } catch (Exception $e) {
+        $logMessage = "[{$timestamp}] ERRO no polo {$moodleUrl}: " . $e->getMessage() . "\n";
+        file_put_contents($logFile, $logMessage, FILE_APPEND);
+        
+        return [
+            'success' => false,
+            'error' => $e->getMessage()
+        ];
+    }
+}
+
+/**
+ * Configurações específicas por polo para resolver problemas
+ */
+function getPoloSpecificUserParams($poloId, $username, $password, $firstName, $lastName, $email) {
+    $baseParams = [
+        'username' => $username,
+        'password' => $password,
+        'firstname' => $firstName,
+        'lastname' => $lastName,
+        'email' => $email
+    ];
+    
+    // Configurações específicas por polo baseadas nos problemas identificados
+    switch ($poloId) {
+        case 'repartimento':
+            // Novo Repartimento - configurações mais específicas
+            return array_merge($baseParams, [
+                'lang' => 'pt_br',
+                'auth' => 'manual',
+                'confirmed' => 1,
+                'timezone' => 'America/Sao_Paulo',
+                'mailformat' => 1, // HTML
+                'autosubscribe' => 1,
+                'trackforums' => 1
+            ]);
+            
+        case 'ava':
+            // AVA - configurações similares mas pode precisar de ajustes específicos
+            return array_merge($baseParams, [
+                'lang' => 'pt_br',
+                'auth' => 'manual',
+                'confirmed' => 1,
+                'timezone' => 'America/Sao_Paulo',
+                'mailformat' => 1,
+                'autosubscribe' => 1,
+                'trackforums' => 1,
+                'maildigest' => 0
+            ]);
+            
+        case 'breu-branco':
+            // Breu Branco funciona - manter configuração mínima
+            return array_merge($baseParams, [
+                'auth' => 'manual',
+                'confirmed' => 1
+            ]);
+            
+        default:
+            return array_merge($baseParams, [
+                'lang' => 'pt_br',
+                'auth' => 'manual',
+                'confirmed' => 1,
+                'timezone' => 'America/Sao_Paulo'
+            ]);
+    }
+}
+
+/**
+ * Função melhorada para criar usuário no Moodle com diagnóstico de erro
+ */
+function createMoodleUserImproved($username, $password, $firstName, $lastName, $email, $customFields, $moodleUrl, $apiToken) {
+    $url = $moodleUrl . '/webservice/rest/server.php';
+    
+    // Parâmetros básicos obrigatórios
+    $params = [
+        'wstoken' => $apiToken,
+        'wsfunction' => 'core_user_create_users',
+        'moodlewsrestformat' => 'json',
+        'users[0][username]' => $username,
+        'users[0][password]' => $password,
+        'users[0][firstname]' => $firstName,
+        'users[0][lastname]' => $lastName,
+        'users[0][email]' => $email
+    ];
+    
+    // Adicionar campos personalizados se existirem
+    $fieldIndex = 0;
+    foreach ($customFields as $key => $value) {
+        if (!empty($value) && $value !== null) {
+            $params["users[0][$key]"] = $value;
+        }
+    }
+    
+    // Log detalhado para diagnóstico
+    $logFile = __DIR__ . '/../moodle_user_creation_debug.log';
+    $timestamp = date('Y-m-d H:i:s');
+    $logMessage = "[{$timestamp}] TENTATIVA DE CRIAÇÃO DE USUÁRIO\n";
+    $logMessage .= "Polo: {$moodleUrl}\n";
+    $logMessage .= "Username: {$username} | Email: {$email}\n";
+    $logMessage .= "Parâmetros: " . print_r($params, true) . "\n";
+    file_put_contents($logFile, $logMessage, FILE_APPEND);
+    
+    try {
+        $response = callMoodleAPI($url, $params);
+        
+        // Log da resposta completa
+        $logMessage = "[{$timestamp}] RESPOSTA COMPLETA: " . print_r($response, true) . "\n";
+        file_put_contents($logFile, $logMessage, FILE_APPEND);
+        
+        // Verificar se houve erro
+        if (isset($response['exception'])) {
+            $errorDetails = [
+                'exception' => $response['exception'],
+                'errorcode' => $response['errorcode'] ?? 'unknown',
+                'message' => $response['message'] ?? 'Erro desconhecido',
+                'debuginfo' => $response['debuginfo'] ?? 'Sem informações de debug'
+            ];
+            
+            $logMessage = "[{$timestamp}] ERRO DETALHADO: " . print_r($errorDetails, true) . "\n";
+            file_put_contents($logFile, $logMessage, FILE_APPEND);
+            
+            // Tratamento específico para diferentes tipos de erro
+            switch ($response['errorcode']) {
+                case 'invalidparameter':
+                    // Tentar com parâmetros mínimos
+                    $logMessage = "[{$timestamp}] TENTANDO PARÂMETROS MÍNIMOS...\n";
+                    file_put_contents($logFile, $logMessage, FILE_APPEND);
+                    return createMoodleUserMinimal($username, $password, $firstName, $lastName, $email, $moodleUrl, $apiToken);
+                    
+                case 'dml_write_exception':
+                case 'database_exception':
+                    throw new Exception("Erro de banco de dados no Moodle (" . $response['errorcode'] . "): " . $response['message']);
+                    
+                case 'webservice_access_exception':
+                    throw new Exception("Erro de permissão no webservice: " . $response['message']);
+                    
+                default:
+                    throw new Exception("Erro no Moodle (" . $response['errorcode'] . "): " . $response['message']);
+            }
+        }
+        
+        if (isset($response[0]['id'])) {
+            $logMessage = "[{$timestamp}] SUCESSO - Usuário criado com ID: {$response[0]['id']}\n";
+            $logMessage .= "==============================\n";
+            file_put_contents($logFile, $logMessage, FILE_APPEND);
+            return $response[0]['id'];
+        }
+        
+        throw new Exception("Resposta inesperada do Moodle: " . print_r($response, true));
+        
+    } catch (Exception $e) {
+        $logMessage = "[{$timestamp}] EXCEÇÃO: " . $e->getMessage() . "\n";
+        $logMessage .= "==============================\n";
+        file_put_contents($logFile, $logMessage, FILE_APPEND);
+        throw $e;
+    }
+}
+
+/**
+ * Função alternativa com parâmetros mínimos
+ */
+function createMoodleUserMinimal($username, $password, $firstName, $lastName, $email, $moodleUrl, $apiToken) {
+    $url = $moodleUrl . '/webservice/rest/server.php';
+    
+    // Usar apenas parâmetros obrigatórios absolutos
+    $params = [
+        'wstoken' => $apiToken,
+        'wsfunction' => 'core_user_create_users',
+        'moodlewsrestformat' => 'json',
+        'users[0][username]' => $username,
+        'users[0][password]' => $password,
+        'users[0][firstname]' => $firstName,
+        'users[0][lastname]' => $lastName,
+        'users[0][email]' => $email
+    ];
+    
+    $logFile = __DIR__ . '/../moodle_user_creation_debug.log';
+    $timestamp = date('Y-m-d H:i:s');
+    $logMessage = "[{$timestamp}] TENTATIVA MÍNIMA - Parâmetros: " . print_r($params, true) . "\n";
+    file_put_contents($logFile, $logMessage, FILE_APPEND);
+    
+    $response = callMoodleAPI($url, $params);
+    
+    $logMessage = "[{$timestamp}] RESPOSTA MÍNIMA: " . print_r($response, true) . "\n";
+    file_put_contents($logFile, $logMessage, FILE_APPEND);
+    
+    if (isset($response['exception'])) {
+        throw new Exception("Erro com parâmetros mínimos (" . $response['errorcode'] . "): " . $response['message']);
+    }
+    
+    if (isset($response[0]['id'])) {
+        $logMessage = "[{$timestamp}] SUCESSO MÍNIMO - ID: {$response[0]['id']}\n";
+        file_put_contents($logFile, $logMessage, FILE_APPEND);
+        return $response[0]['id'];
+    }
+    
+    throw new Exception("Falha na criação com parâmetros mínimos");
 }
 
 /**
@@ -232,46 +501,6 @@ function getAllCoursesInCategory($categoryId, $moodleUrl, $apiToken) {
 }
 
 /**
- * Função para criar usuário no Moodle via API REST
- */
-function createMoodleUser($username, $password, $firstName, $lastName, $email, $customFields, $moodleUrl, $apiToken) {
-    $url = $moodleUrl . '/webservice/rest/server.php';
-    
-    $params = [
-        'wstoken' => $apiToken,
-        'wsfunction' => 'core_user_create_users',
-        'moodlewsrestformat' => 'json',
-        'users[0][username]' => $username,
-        'users[0][password]' => $password,
-        'users[0][firstname]' => $firstName,
-        'users[0][lastname]' => $lastName,
-        'users[0][email]' => $email
-    ];
-    
-    // Adicionar campos personalizados se existirem no Moodle
-    $fieldIndex = 0;
-    foreach ($customFields as $key => $value) {
-        if (!empty($value)) {
-            $params["users[0][customfields][$fieldIndex][type]"] = $key;
-            $params["users[0][customfields][$fieldIndex][value]"] = $value;
-            $fieldIndex++;
-        }
-    }
-    
-    $response = callMoodleAPI($url, $params);
-    
-    if (isset($response[0]['id'])) {
-        return $response[0]['id'];
-    }
-    
-    if (isset($response['exception'])) {
-        throw new Exception($response['message'] . (isset($response['debuginfo']) ? "<div>" . $response['debuginfo'] . "</div>" : ""));
-    }
-    
-    return null;
-}
-
-/**
  * Função para inscrever usuário em um curso no Moodle via API REST
  */
 function enrollUserInCourse($userId, $courseId, $moodleUrl, $apiToken) {
@@ -304,14 +533,22 @@ function callMoodleAPI($url, $params) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Aumentar timeout para 30 segundos
     
     $response = curl_exec($ch);
     
     if (curl_errno($ch)) {
-        throw new Exception('Erro de conexão: ' . curl_error($ch));
+        $error = curl_error($ch);
+        curl_close($ch);
+        throw new Exception('Erro de conexão cURL: ' . $error);
     }
     
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
+    
+    if ($httpCode != 200) {
+        throw new Exception('Erro HTTP: ' . $httpCode);
+    }
     
     // Tentar decodificar o JSON
     $decodedResponse = json_decode($response, true);
@@ -374,15 +611,12 @@ function generatePassword($length = 12) {
     return $password;
 }
 
-
-
-
 /**
- * Função para enviar e-mail de aprovação para o aluno - Versão corrigida
+ * Função para enviar e-mail de aprovação para o aluno
  */
 function sendApprovalEmail($email, $name, $categoryName, $poloName, $username, $password, $moodleUrl, $coursesCount) {
     // Incluir o helper de email
-    require_once(__DIR__ . '/../mail_helper.php');
+    require_once(__DIR__ . '/../simple_mail_helper.php');
     
     // Log para diagnóstico
     $logFile = __DIR__ . '/../approval_email_log.txt';
@@ -464,11 +698,11 @@ function sendApprovalEmail($email, $name, $categoryName, $poloName, $username, $
 }
 
 /**
- * Função para enviar e-mail de rejeição para o aluno - Versão corrigida
+ * Função para enviar e-mail de rejeição para o aluno
  */
 function sendRejectionEmail($email, $name, $categoryName, $poloName, $reason) {
     // Incluir o helper de email
-    require_once(__DIR__ . '/../mail_helper.php');
+    require_once(__DIR__ . '/../simple_mail_helper.php');
     
     // Log para diagnóstico
     $logFile = __DIR__ . '/../rejection_email_log.txt';
@@ -598,6 +832,13 @@ try {
             background-color: #f8d7da;
             color: #721c24;
         }
+        .debug-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -616,10 +857,41 @@ try {
             <div class="alert alert-info"><?php echo $message; ?></div>
         <?php endif; ?>
         
+        <!-- Informações de diagnóstico -->
+        <div class="debug-info">
+            <h5><i class="fas fa-tools me-2"></i>Informações de Diagnóstico</h5>
+            <p><strong>Logs de Debug Disponíveis:</strong></p>
+            <ul>
+                <li>
+                    <strong>moodle_user_creation_debug.log</strong> - Log detalhado da criação de usuários no Moodle
+                    <?php if (file_exists(__DIR__ . '/../moodle_user_creation_debug.log')): ?>
+                        <span class="text-success">(Disponível)</span>
+                        <a href="../moodle_user_creation_debug.log" target="_blank" class="btn btn-sm btn-outline-info ms-2">Ver Log</a>
+                    <?php else: ?>
+                        <span class="text-muted">(Será criado quando houver atividade)</span>
+                    <?php endif; ?>
+                </li>
+                <li>
+                    <strong>polo_capabilities_test.log</strong> - Teste de conectividade dos polos
+                    <?php if (file_exists(__DIR__ . '/../polo_capabilities_test.log')): ?>
+                        <span class="text-success">(Disponível)</span>
+                        <a href="../polo_capabilities_test.log" target="_blank" class="btn btn-sm btn-outline-info ms-2">Ver Log</a>
+                    <?php else: ?>
+                        <span class="text-muted">(Será criado quando houver atividade)</span>
+                    <?php endif; ?>
+                </li>
+            </ul>
+            <p class="text-muted mb-0">
+                <small><i class="fas fa-info-circle me-1"></i>
+                Esta versão inclui diagnóstico avançado para resolver problemas de "Erro ao escrever na base de dados" nos polos Novo Repartimento e AVA.
+                </small>
+            </p>
+        </div>
+        
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">
-			<h5 class="m-0">Lista de Pré-matrículas <?php echo ucfirst(isset($status_filter) ? $status_filter : 'pending'); ?></h5>
-          </div>
+                <h5 class="m-0">Lista de Pré-matrículas <?php echo ucfirst(isset($status_filter) ? $status_filter : 'pending'); ?></h5>
+            </div>
             <div class="card-body">
                 <?php if (empty($prematriculas)): ?>
                     <div class="alert alert-info">Nenhuma pré-matrícula encontrada.</div>
@@ -647,7 +919,12 @@ try {
                                         <td><?php echo htmlspecialchars($p['email']); ?></td>
                                         <td><?php echo htmlspecialchars($p['phone']); ?></td>
                                         <td><?php echo htmlspecialchars($p['category_name']); ?></td>
-                                        <td><?php echo htmlspecialchars($p['polo_name']); ?></td>
+                                        <td>
+                                            <?php echo htmlspecialchars($p['polo_name']); ?>
+                                            <?php if (in_array($p['polo_id'], ['repartimento', 'ava'])): ?>
+                                                <span class="badge bg-warning text-dark ms-1" title="Polo com correções aplicadas">⚡</span>
+                                            <?php endif; ?>
+                                        </td>
                                         <td>
                                             <?php if ($p['status'] === 'pending'): ?>
                                                 <span class="status-badge status-pending">Pendente</span>
@@ -754,6 +1031,13 @@ try {
                                                             <p>Você está prestes a aprovar a pré-matrícula de <strong><?php echo htmlspecialchars($p['first_name'] . ' ' . $p['last_name']); ?></strong> no curso <strong><?php echo htmlspecialchars($p['category_name']); ?></strong>.</p>
                                                             <p>Após a aprovação, o aluno será automaticamente matriculado no Moodle e receberá um email com as credenciais de acesso.</p>
                                                             
+                                                            <?php if (in_array($p['polo_id'], ['repartimento', 'ava'])): ?>
+                                                                <div class="alert alert-info">
+                                                                    <i class="fas fa-info-circle me-2"></i>
+                                                                    <strong>Polo com Correções:</strong> Este polo possui diagnóstico avançado para resolver problemas de criação de usuário no Moodle.
+                                                                </div>
+                                                            <?php endif; ?>
+                                                            
                                                             <div class="mb-3">
                                                                 <label for="payment_method<?php echo $p['id']; ?>" class="form-label">Método de Pagamento</label>
                                                                 <select class="form-select" id="payment_method<?php echo $p['id']; ?>" name="payment_method" required>
@@ -825,6 +1109,16 @@ try {
                     </div>
                 <?php endif; ?>
             </div>
+        </div>
+        
+        <!-- Links de navegação -->
+        <div class="text-center mt-4">
+            <a href="admin_polo_config.php?key=<?php echo htmlspecialchars($admin_key); ?>" class="btn btn-outline-primary me-2">
+                <i class="fas fa-cog me-2"></i>Configurar Polos
+            </a>
+            <a href="../index.html" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-2"></i>Voltar ao Site
+            </a>
         </div>
     </div>
     

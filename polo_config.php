@@ -25,6 +25,8 @@ $POLO_CONFIG = array (
       ),
     ),
   ),
+
+
   'breu-branco' => 
   array (
     'name' => 'Breu Branco',
@@ -66,6 +68,8 @@ $POLO_CONFIG = array (
       ),
     ),
   ),
+
+
   'igarape-miri' => 
   array (
     'name' => 'Igarapé-Miri',
@@ -90,6 +94,8 @@ $POLO_CONFIG = array (
       ),
     ),
   ),
+
+
     'repartimento' => 
   array (
     'name' => 'Novo Repartimento',
@@ -131,6 +137,8 @@ $POLO_CONFIG = array (
       ),
     ),
   ),
+
+
  'bioquality' => 
   array (
     'name' => 'BIOQUALITY - INVISTA EM RESULTADOS',
@@ -172,6 +180,8 @@ $POLO_CONFIG = array (
       ),
     ),
   ),
+
+
     'ava' => 
   array (
     'name' => 'AVA',
@@ -213,6 +223,7 @@ $POLO_CONFIG = array (
       ),
     ),
   ),
+  
 );
 
 // Configuração padrão para qualquer polo que não tenha preços específicos
